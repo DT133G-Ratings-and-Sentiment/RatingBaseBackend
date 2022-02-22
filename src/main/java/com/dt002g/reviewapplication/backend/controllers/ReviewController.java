@@ -1,6 +1,6 @@
 package com.dt002g.reviewapplication.backend.controllers;
 
-import com.dt002g.reviewapplication.backend.models.Review;
+import com.dt002g.reviewapplication.backend.models.Reviews;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,54 +13,54 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/references")
+@RequestMapping("/api/v1/reviews")
 public class ReviewController {
 
     @Autowired
-    private ReviewRepository referenceRepository;
+    private ReviewRepository reviewRepository;
 
+    //  http://localhost:8080/api/v1/reviews/getAll
     @GetMapping("/getAll")
-    public List<Review> getAll(){
-        return referenceRepository.findAll();
+    public List<Reviews> getAll(){
+        return reviewRepository.findAll();
     }
     
-    
-    //**  Funkar ej måste fixa i databasen **/
+    //  http://localhost:8080/api/v1/reviews/getByString/{string} 
     @GetMapping()
     @RequestMapping("/getByString/{comment}")
-    public List<Review> getByString(@PathVariable String comment){
-    	ExampleMatcher ignoringExampleMatcher = ExampleMatcher.matchingAny()
-    		      .withMatcher("comment", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
-    		      .withIgnorePaths("id", "rating");
-    			Review review = new Review();
-    			review.setFreeText(comment);
-    		    Example<Review> example = Example.of(review , ignoringExampleMatcher);
-    		    return referenceRepository.findAll(example);
-
-    
+    public List<Reviews> getByString(@PathVariable String comment){
+    	ExampleMatcher getByComment = ExampleMatcher.matchingAny()
+    			.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+    			.withIgnorePaths("id", "rating")
+    			.withIgnoreCase();
+    	
+    	Reviews review = new Reviews();
+    	review.setFreeText(comment);
+	    Example<Reviews> example = Example.of(review , getByComment);
+	    return reviewRepository.findAll(example);
     }
 
     @GetMapping
     @RequestMapping("{id}")
-    public Optional<Review> get(@PathVariable Long id){
-        return referenceRepository.findById(id);
+    public Optional<Reviews> get(@PathVariable Long id){
+        return reviewRepository.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Review create(@RequestBody final Review reference){
-        return referenceRepository.saveAndFlush(reference);
+    public Reviews create(@RequestBody final Reviews reference){
+        return reviewRepository.saveAndFlush(reference);
     }
 
     @RequestMapping(value="{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id){
-        referenceRepository.deleteById(id);
+        reviewRepository.deleteById(id);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public Review update(@PathVariable Long id, @RequestBody Review reference){
-        Review existingReference = referenceRepository.getById(id);
+    public Reviews update(@PathVariable Long id, @RequestBody Reviews reference){
+        Reviews existingReference = reviewRepository.getById(id);
         BeanUtils.copyProperties(reference, existingReference, "id");
-        return referenceRepository.saveAndFlush(existingReference);
+        return reviewRepository.saveAndFlush(existingReference);
     }
 }

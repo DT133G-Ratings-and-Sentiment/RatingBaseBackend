@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Review {
+public class Reviews {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
