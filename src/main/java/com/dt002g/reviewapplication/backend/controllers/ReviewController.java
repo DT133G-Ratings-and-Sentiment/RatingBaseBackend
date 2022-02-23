@@ -39,6 +39,19 @@ public class ReviewController {
 	    Example<Reviews> example = Example.of(review , getByComment);
 	    return reviewRepository.findAll(example);
     }
+    
+    //  http://localhost:8080/api/v1/reviews/getByRating/{int} 
+    @GetMapping()
+    @RequestMapping("/getByRating/{rating}")
+    public List<Reviews> getByRating(@PathVariable int rating){
+    	ExampleMatcher getByRating = ExampleMatcher.matchingAll()
+    			.withIgnorePaths("id", "comment");
+    	
+    	Reviews review = new Reviews();
+    	review.setRating(rating);
+    	Example<Reviews> example = Example.of(review, getByRating);
+    	return reviewRepository.findAll(example);
+    }
 
     @GetMapping
     @RequestMapping("{id}")
