@@ -60,9 +60,9 @@ public class ReviewController {
     	return reviewRepository.findAll(example);
     }
     
+    //  http://localhost:8080/api/v1/reviews/getByStrings/search?searchString1=cat&searchString2=dog etc... 
     @PostMapping(value = "/getByStrings/search")
-
-    public List<Reviews> getByStrings(HttpServletRequest request){
+    public List<Review> getByStrings(HttpServletRequest request){
     	String query = "SELECT * FROM reviews WHERE comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
     			
 		for(int i = 2; i <= 10; i++) {
