@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "Reviews")
 public class Review {
     @Id
     @Column(name = "id")
@@ -15,7 +16,7 @@ public class Review {
     @Column(name="rating")
     int rating;
 
-    @Column(name = "free_text")
+    @Column(name = "comment")
     String freeText;
 
     public Long getId() {
