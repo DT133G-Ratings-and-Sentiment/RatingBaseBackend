@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table
-public class Reviews {
+@Table(name = "Reviews")
+public class Review {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

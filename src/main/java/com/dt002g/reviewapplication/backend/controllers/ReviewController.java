@@ -1,6 +1,6 @@
 package com.dt002g.reviewapplication.backend.controllers;
 
-import com.dt002g.reviewapplication.backend.models.Reviews;
+import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import com.mysql.cj.Session;
 
@@ -28,35 +28,35 @@ public class ReviewController {
 
     //  http://localhost:8080/api/v1/reviews/getAll
     @GetMapping("/getAll")
-    public List<Reviews> getAll(){
+    public List<Review> getAll(){
         return reviewRepository.findAll();
     }
     
     //  http://localhost:8080/api/v1/reviews/getByString/{string} 
     @GetMapping()
     @RequestMapping("/getByString/{comment}")
-    public List<Reviews> getByString(@PathVariable String comment){
+    public List<Review> getByString(@PathVariable String comment){
     	ExampleMatcher getByComment = ExampleMatcher.matchingAny()
     			.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
     			.withIgnorePaths("id", "rating")
     			.withIgnoreCase();
     	
-    	Reviews review = new Reviews();
+    	Review review = new Review();
     	review.setFreeText(comment);
-	    Example<Reviews> example = Example.of(review , getByComment);
+	    Example<Review> example = Example.of(review , getByComment);
 	    return reviewRepository.findAll(example);
     }
     
     //  http://localhost:8080/api/v1/reviews/getByRating/{int} 
     @GetMapping()
     @RequestMapping("/getByRating/{rating}")
-    public List<Reviews> getByRating(@PathVariable int rating){
+    public List<Review> getByRating(@PathVariable int rating){
     	ExampleMatcher getByRating = ExampleMatcher.matchingAll()
     			.withIgnorePaths("id", "comment");
     	
-    	Reviews review = new Reviews();
+    	Review review = new Review();
     	review.setRating(rating);
-    	Example<Reviews> example = Example.of(review, getByRating);
+    	Example<Review> example = Example.of(review, getByRating);
     	return reviewRepository.findAll(example);
     }
     
@@ -80,13 +80,13 @@ public class ReviewController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public Optional<Reviews> get(@PathVariable Long id){
+    public Optional<Review> get(@PathVariable Long id){
         return reviewRepository.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Reviews create(@RequestBody final Reviews reference){
+    public Review create(@RequestBody final Review reference){
         return reviewRepository.saveAndFlush(reference);
     }
 
@@ -96,8 +96,8 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public Reviews update(@PathVariable Long id, @RequestBody Reviews reference){
-        Reviews existingReference = reviewRepository.getById(id);
+    public Review update(@PathVariable Long id, @RequestBody Review reference){
+        Review existingReference = reviewRepository.getById(id);
         BeanUtils.copyProperties(reference, existingReference, "id");
         return reviewRepository.saveAndFlush(existingReference);
     }
