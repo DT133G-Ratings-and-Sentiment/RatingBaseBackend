@@ -2,15 +2,22 @@ package com.dt002g.reviewapplication.backend.controllers;
 
 import com.dt002g.reviewapplication.backend.models.Reviews;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
+import com.mysql.cj.Session;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -52,6 +59,24 @@ public class ReviewController {
     	Example<Reviews> example = Example.of(review, getByRating);
     	return reviewRepository.findAll(example);
     }
+    
+    @PostMapping(value = "/getByStrings/search")
+
+    public List<Reviews> getByStrings(HttpServletRequest request){
+    	String query = "SELECT * FROM reviews WHERE comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+    			
+		for(int i = 2; i <= 10; i++) {
+			try {
+				query += "OR comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		
+	    return reviewRepository.customQuery(query);
+    }
+    
 
     @GetMapping
     @RequestMapping("{id}")
