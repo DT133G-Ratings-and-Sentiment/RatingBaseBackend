@@ -2,15 +2,22 @@ package com.dt002g.reviewapplication.backend.controllers;
 
 import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
+import com.mysql.cj.Session;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -29,36 +36,47 @@ public class ReviewController {
     @GetMapping()
     @RequestMapping("/getByString/{comment}")
     public List<Review> getByString(@PathVariable String comment){
-    	ExampleMatcher getByComment = ExampleMatcher.matchingAny()
-    			.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-    			.withIgnorePaths("id", "rating")
-    			.withIgnoreCase();
-    	
-    	Review review = new Review();
-    	review.setFreeText(comment);
-	    Example<Review> example = Example.of(review , getByComment);
-	    return reviewRepository.findAll(example);
+    	return reviewRepository.findByCommentContaining(comment);
     }
     
     //  http://localhost:8080/api/v1/reviews/getByRating/{int} 
     @GetMapping()
     @RequestMapping("/getByRating/{rating}")
     public List<Review> getByRating(@PathVariable int rating){
-    	ExampleMatcher getByRating = ExampleMatcher.matchingAll()
-    			.withIgnorePaths("id", "comment");
-    	
-    	Review review = new Review();
-    	review.setRating(rating);
-    	Example<Review> example = Example.of(review, getByRating);
-    	return reviewRepository.findAll(example);
+    	return reviewRepository.findByRating(rating);
     }
-
-    @GetMapping
-    @RequestMapping("{id}")
-    public Optional<Review> get(@PathVariable Long id){
-        return reviewRepository.findById(id);
+    
+    //  http://localhost:8080/api/v1/reviews/getByStrings/search?searchString1=cat&searchString2=dog etc... 
+    @PostMapping(value = "/getByStrings/search")
+    public List<Review> getByStrings(HttpServletRequest request){
+    	String query = "SELECT * FROM reviews WHERE comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+    			
+		for(int i = 2; i <= 10; i++) {
+			try {
+				query += "OR comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		
+	    return reviewRepository.customQuery(query);
     }
+    
+    //  http://localhost:8080/api/v1/reviews/getByStrings/search?comment=cat&rating=2
+    @PostMapping(value = "/getByRatingAndString/search")
+    public List<Review> getByRatingAndString(HttpServletRequest request){
+    	try {
+    		String comment = "%" +  request.getParameter("comment") + "%";
+    		return reviewRepository.getByRatingAndComment(Integer.parseInt(request.getParameter("rating")), comment);
+    	}
+    	catch(NullPointerException e) {
+    		return null;
+    	}
+    }
+    
 
+    //  Vet ej om vi behöver dom här under?
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Review create(@RequestBody final Review reference){

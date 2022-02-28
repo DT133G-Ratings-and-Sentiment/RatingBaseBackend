@@ -17,7 +17,7 @@ public class Review {
     int rating;
 
     @Column(name = "comment")
-    String freeText;
+    String comment;
 
     public Long getId() {
         return id;
@@ -36,10 +36,10 @@ public class Review {
     }
 
     public String getFreeText() {
-        return freeText;
+        return comment;
     }
 
     public void setFreeText(String freeText) {
-        this.freeText = freeText;
+        this.comment = freeText;
     }
 }
