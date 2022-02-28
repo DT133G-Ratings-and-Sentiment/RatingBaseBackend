@@ -36,28 +36,14 @@ public class ReviewController {
     @GetMapping()
     @RequestMapping("/getByString/{comment}")
     public List<Review> getByString(@PathVariable String comment){
-    	ExampleMatcher getByComment = ExampleMatcher.matchingAny()
-    			.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-    			.withIgnorePaths("id", "rating")
-    			.withIgnoreCase();
-    	
-    	Review review = new Review();
-    	review.setFreeText(comment);
-	    Example<Review> example = Example.of(review , getByComment);
-	    return reviewRepository.findAll(example);
+    	return reviewRepository.findByCommentContaining(comment);
     }
     
     //  http://localhost:8080/api/v1/reviews/getByRating/{int} 
     @GetMapping()
     @RequestMapping("/getByRating/{rating}")
     public List<Review> getByRating(@PathVariable int rating){
-    	ExampleMatcher getByRating = ExampleMatcher.matchingAll()
-    			.withIgnorePaths("id", "comment");
-    	
-    	Review review = new Review();
-    	review.setRating(rating);
-    	Example<Review> example = Example.of(review, getByRating);
-    	return reviewRepository.findAll(example);
+    	return reviewRepository.findByRating(rating);
     }
     
     //  http://localhost:8080/api/v1/reviews/getByStrings/search?searchString1=cat&searchString2=dog etc... 
@@ -77,13 +63,20 @@ public class ReviewController {
 	    return reviewRepository.customQuery(query);
     }
     
-
-    @GetMapping
-    @RequestMapping("{id}")
-    public Optional<Review> get(@PathVariable Long id){
-        return reviewRepository.findById(id);
+    //  http://localhost:8080/api/v1/reviews/getByStrings/search?comment=cat&rating=2
+    @PostMapping(value = "/getByRatingAndString/search")
+    public List<Review> getByRatingAndString(HttpServletRequest request){
+    	try {
+    		String comment = "%" +  request.getParameter("comment") + "%";
+    		return reviewRepository.getByRatingAndComment(Integer.parseInt(request.getParameter("rating")), comment);
+    	}
+    	catch(NullPointerException e) {
+    		return null;
+    	}
     }
+    
 
+    //  Vet ej om vi behöver dom här under?
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Review create(@RequestBody final Review reference){
