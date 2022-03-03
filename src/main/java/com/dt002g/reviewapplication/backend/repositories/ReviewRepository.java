@@ -22,4 +22,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	
 	List<Review> findByCommentContaining(String comment);
 	List<Review> findByRating(int rating);
+	
+	public List<Review> findTop100ByOrderByIdAsc();
 }
