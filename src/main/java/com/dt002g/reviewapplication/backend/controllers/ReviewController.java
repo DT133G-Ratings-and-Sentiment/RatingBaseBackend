@@ -29,7 +29,16 @@ public class ReviewController {
     //  http://localhost:8080/api/v1/reviews/getAll
     @GetMapping("/getAll")
     public List<Review> getAll(){
-        return reviewRepository.findAll();
+        //return reviewRepository.findAll();
+    	return reviewRepository.findAll();
+    }
+    
+    @GetMapping
+    @RequestMapping(value = "/getTopReviews", method = RequestMethod.GET)
+    public List<Review> getTopReviews(){
+    	List<Review> temp =  reviewRepository.findTop100ByOrderByIdAsc();
+    	System.out.println("getTop100Reviews size:" + temp.size());
+    	return temp;
     }
     
     //  http://localhost:8080/api/v1/reviews/getByString/{string} 
