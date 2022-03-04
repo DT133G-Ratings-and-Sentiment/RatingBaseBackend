@@ -24,4 +24,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	List<Review> findByRating(int rating);
 	
 	public List<Review> findTop100ByOrderByIdAsc();
+	
+	public List<Review> findTop100ByIdGreaterThanOrderByIdAsc(Long id);
 }

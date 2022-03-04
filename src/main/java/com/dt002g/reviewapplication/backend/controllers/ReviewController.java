@@ -41,6 +41,14 @@ public class ReviewController {
     	return temp;
     }
     
+    @GetMapping
+    @RequestMapping(value = "/getTopReviewsLargerThanId/{id}", method = RequestMethod.GET)
+    public List<Review> getTopReviewsLargerThanId(@PathVariable Long id){
+    	List<Review> temp =  reviewRepository.findTop100ByIdGreaterThanOrderByIdAsc(id);
+    	System.out.println("getTopReviewsFromId:" + temp.size());
+    	return temp;
+    }
+    
     //  http://localhost:8080/api/v1/reviews/getByString/{string} 
     @GetMapping()
     @RequestMapping("/getByString/{comment}")
