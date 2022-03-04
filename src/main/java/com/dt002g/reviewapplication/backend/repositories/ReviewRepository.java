@@ -31,4 +31,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	
 	@Query(value = "SELECT rating as rating, COUNT(comment) as amount FROM reviews WHERE comment LIKE :comment GROUP BY rating ORDER BY rating ASC", nativeQuery = true)
 	public List<Map<Integer, Integer>> getRatingByComment(@Param("comment") String comment);
+	
+	@Query(value = "SELECT TOP 100 * FROM Reviews WHERE rating = :rating and id > :id", nativeQuery = true )
+	List<Review> getTop100ByRatingAndIdGreaterThanId(@Param("rating") int rating, @Param("id") long id);
+	
+
 }
