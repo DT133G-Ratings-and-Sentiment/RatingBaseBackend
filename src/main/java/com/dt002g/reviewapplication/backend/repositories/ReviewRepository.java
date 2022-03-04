@@ -26,4 +26,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	public List<Review> findTop100ByOrderByIdAsc();
 	
 	public List<Review> findTop100ByIdGreaterThanOrderByIdAsc(Long id);
+	
+	@Query(value = "SELECT TOP 100 * FROM Reviews WHERE rating = :rating and id > :id", nativeQuery = true )
+	List<Review> getTop100ByRatingAndIdGreaterThanId(@Param("rating") int rating, @Param("id") long id);
+	
+
 }

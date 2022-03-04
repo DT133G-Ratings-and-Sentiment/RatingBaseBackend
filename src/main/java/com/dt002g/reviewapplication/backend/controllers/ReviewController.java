@@ -63,10 +63,48 @@ public class ReviewController {
     	return reviewRepository.findByRating(rating);
     }
     
+    @GetMapping()
+    @RequestMapping("/getTopReviewsByRatingLargerThanId/{rating}/{id}")
+    public List<Review>  getTopReviewsByRatingLargerThanId(@PathVariable Integer rating, @PathVariable Long id){
+    	return reviewRepository.getTop100ByRatingAndIdGreaterThanId(rating, id);
+    }
+    
     //  http://localhost:8080/api/v1/reviews/getByStrings/search?searchString1=cat&searchString2=dog etc... 
     @PostMapping(value = "/getByStrings/search")
     public List<Review> getByStrings(HttpServletRequest request){
     	String query = "SELECT * FROM reviews WHERE comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+    			
+		for(int i = 2; i <= 10; i++) {
+			try {
+				query += "OR comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		
+	    return reviewRepository.customQuery(query);
+    }
+    
+    @GetMapping(value = "/getTopReviewsByStringsLargerThanId/{id}/search")
+    public List<Review> getTopReviewsByStringsLargerThanId(@PathVariable Long id, HttpServletRequest request){
+    	String query = "SELECT TOP 100 * FROM reviews WHERE id > "+id+" and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+    			
+		for(int i = 2; i <= 10; i++) {
+			try {
+				query += "OR comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		
+	    return reviewRepository.customQuery(query);
+    }
+    
+    @GetMapping(value = "/getTopReviewsByRatingAndStringsLargerThanId/{id}/{rating}/search{searchString}")
+    public List<Review> getTopReviewsByRatingAndStringsLargerThanId(@PathVariable Long id, @PathVariable Integer rating, HttpServletRequest request){
+    	String query = "SELECT TOP 100 * FROM reviews WHERE id > "+ id +" and rating = " + rating + " and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
     			
 		for(int i = 2; i <= 10; i++) {
 			try {
