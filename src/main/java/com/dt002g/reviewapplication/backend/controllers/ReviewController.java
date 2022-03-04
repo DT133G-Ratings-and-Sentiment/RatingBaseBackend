@@ -1,5 +1,6 @@
 package com.dt002g.reviewapplication.backend.controllers;
 
+import com.dt002g.reviewapplication.backend.models.Rating;
 import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import com.mysql.cj.Session;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -90,6 +92,12 @@ public class ReviewController {
     	catch(NullPointerException e) {
     		return null;
     	}
+    }
+    
+    @GetMapping()
+    @RequestMapping("/getRatingByString/{comment}")
+    public List<Map<Integer, Integer>> getRatingByString(@PathVariable String comment){
+    	return reviewRepository.getRatingByComment("%" + comment + "%");
     }
     
 
