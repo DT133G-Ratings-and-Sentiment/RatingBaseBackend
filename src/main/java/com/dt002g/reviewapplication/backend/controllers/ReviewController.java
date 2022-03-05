@@ -1,25 +1,24 @@
 package com.dt002g.reviewapplication.backend.controllers;
 
-import com.dt002g.reviewapplication.backend.models.Rating;
-import com.dt002g.reviewapplication.backend.models.Review;
-import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
-import com.mysql.cj.Session;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
+import com.dt002g.reviewapplication.backend.models.RatingInterface;
+import com.dt002g.reviewapplication.backend.models.Review;
+import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -134,7 +133,9 @@ public class ReviewController {
     
     @GetMapping()
     @RequestMapping("/getRatingByString/{comment}")
-    public List<Map<Integer, Integer>> getRatingByString(@PathVariable String comment){
+    public List<RatingInterface> getRatingByString(@PathVariable String comment){
+    	
+    	
     	return reviewRepository.getRatingByComment("%" + comment + "%");
     }
     
