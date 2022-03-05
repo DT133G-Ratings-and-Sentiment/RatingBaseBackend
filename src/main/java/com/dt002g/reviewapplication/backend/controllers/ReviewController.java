@@ -1,6 +1,8 @@
 package com.dt002g.reviewapplication.backend.controllers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -117,6 +119,21 @@ public class ReviewController {
 		}
 		
 	    return reviewRepository.customQuery(query);
+    }
+    
+    @GetMapping(value = "/getNumberOfReviewsByStrings/search{searchString}")
+    public Map<String, Long> getNumberOfReviewsByStrings(HttpServletRequest request){
+    	HashMap<String, Long> result = new HashMap<String, Long>();
+		for(int i = 1; i <= 10; i++) {
+			try {
+				result.put(request.getParameter("searchString" + i).toString(), reviewRepository.getCountOfReviewsWhereCommentContains("%" + request.getParameter("searchString" + i).toString() + "%"));
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		
+	    return result;
     }
     
     //  http://localhost:8080/api/v1/reviews/getByStrings/search?comment=cat&rating=2
