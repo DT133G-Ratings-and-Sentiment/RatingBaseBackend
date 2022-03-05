@@ -34,5 +34,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	@Query(value = "SELECT TOP 100 * FROM Reviews WHERE rating = :rating and id > :id", nativeQuery = true )
 	List<Review> getTop100ByRatingAndIdGreaterThanId(@Param("rating") int rating, @Param("id") long id);
 	
-
+	@Query(value = "SELECT COUNT(*) FROM Reviews WHERE comment LIKE :word", nativeQuery = true)
+	long getCountOfReviewsWhereCommentContains(String word);
 }

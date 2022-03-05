@@ -139,6 +139,13 @@ public class ReviewController {
     	return reviewRepository.getRatingByComment("%" + comment + "%");
     }
     
+    @GetMapping()
+    @RequestMapping("/getCountOfReviewsWhereCommentContains/{comment}")
+    public Long getCountOfReviewsWhereCommentContains(@PathVariable String comment){
+    	
+    	
+    	return reviewRepository.getCountOfReviewsWhereCommentContains("%" + comment + "%");
+    }
 
     //  Vet ej om vi behöver dom här under?
     @PostMapping
