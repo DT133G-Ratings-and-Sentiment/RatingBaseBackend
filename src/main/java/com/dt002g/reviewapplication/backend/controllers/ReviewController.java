@@ -2,6 +2,7 @@ package com.dt002g.reviewapplication.backend.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -151,8 +152,6 @@ public class ReviewController {
     @GetMapping()
     @RequestMapping("/getRatingByString/{comment}")
     public List<RatingInterface> getRatingByString(@PathVariable String comment){
-    	
-    	
     	return reviewRepository.getRatingByComment("%" + comment + "%");
     }
     
@@ -163,6 +162,8 @@ public class ReviewController {
     	
     	return reviewRepository.getCountOfReviewsWhereCommentContains("%" + comment + "%");
     }
+    
+
 
     //  Vet ej om vi behöver dom här under?
     @PostMapping
