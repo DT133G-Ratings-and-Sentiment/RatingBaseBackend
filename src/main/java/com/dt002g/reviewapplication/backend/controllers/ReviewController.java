@@ -122,6 +122,21 @@ public class ReviewController {
 	    return reviewRepository.customQuery(query);
     }
     
+    @GetMapping(value = "/getNumberOfReviewsByInclusiveStrings/search")
+    public Integer getNumberOfReviewsByInclusiveStrings(HttpServletRequest request){
+    	String query = "SELECT COUNT(*) FROM reviews WHERE comment LIKE '% " + request.getParameter("searchString1").toString() + " %'";
+    			
+		for(int i = 2; i <= 10; i++) {
+			try {
+				query += "AND comment LIKE '% " +  request.getParameter("searchString" + i).toString() + " %'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		
+	    return reviewRepository.customNumberOfResultQuery(query);
+    }
     @GetMapping(value = "/getTopReviewsByRatingAndStringsLargerThanId/{id}/{rating}/search{searchString}")
     public List<Review> getTopReviewsByRatingAndStringsLargerThanId(@PathVariable Long id, @PathVariable Integer rating, HttpServletRequest request){
     	String query = "SELECT TOP 100 * FROM reviews WHERE id > "+ id +" and rating = " + rating + " and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";

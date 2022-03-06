@@ -19,4 +19,10 @@ public class ReviewRepositoryImpl {
 		TypedQuery<Review> query = (TypedQuery<Review>) entityManager.createNativeQuery(hql, Review.class);
 		return query.getResultList();
 	}
+	
+	public Integer customNumberOfResultQuery(String queryString){
+		String hql = queryString;
+		TypedQuery<Integer> query = (TypedQuery<Integer>) entityManager.createNativeQuery(hql);
+		return query.getSingleResult();
+	}
 }
