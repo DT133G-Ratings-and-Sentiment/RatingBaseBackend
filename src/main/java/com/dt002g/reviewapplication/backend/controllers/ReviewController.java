@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -107,11 +108,11 @@ public class ReviewController {
     
     @GetMapping(value = "/getTopReviewsByInclusiveStringsLargerThanId/{id}/search")
     public List<Review> getTopReviewsByInclusiveStringsLargerThanId(@PathVariable Long id, HttpServletRequest request){
-    	String query = "SELECT TOP 100 * FROM reviews WHERE id > "+id+" and comment LIKE '% " + request.getParameter("searchString1").toString() + " %'";
+    	String query = "SELECT TOP 100 * FROM reviews WHERE id > "+id+" and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
     			
 		for(int i = 2; i <= 10; i++) {
 			try {
-				query += "AND comment LIKE '% " +  request.getParameter("searchString" + i).toString() + " %'";
+				query += "AND comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
 			}
 			catch(NullPointerException e) {
 				break;
@@ -123,11 +124,11 @@ public class ReviewController {
     
     @GetMapping(value = "/getNumberOfReviewsByInclusiveStrings/search")
     public Integer getNumberOfReviewsByInclusiveStrings(HttpServletRequest request){
-    	String query = "SELECT COUNT(*) FROM reviews WHERE comment LIKE '% " + request.getParameter("searchString1").toString() + " %'";
+    	String query = "SELECT COUNT(*) FROM reviews WHERE comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
     			
 		for(int i = 2; i <= 10; i++) {
 			try {
-				query += "AND comment LIKE '% " +  request.getParameter("searchString" + i).toString() + " %'";
+				query += "AND comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
 			}
 			catch(NullPointerException e) {
 				break;
@@ -150,6 +151,23 @@ public class ReviewController {
 		}
 		
 	    return reviewRepository.customQuery(query);
+    }
+    
+    @PostMapping(value = "/getRatingByInclusiveSearchString/search{searchString}")
+    public List<RatingInterface> getRatingByExplicitSearchString(HttpServletRequest request){
+    	String query = "SELECT rating as rating , COUNT(comment) as amount FROM reviews WHERE comment LIKE '%" + request.getParameter("searchString1") + "%' ";
+    	
+    	for(int i = 2; i <= 10; i++) {
+			try {
+				query += "AND comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+    	 query += " GROUP BY rating ORDER BY rating ASC";
+    	 System.out.println("Query: " + query);
+    	 return reviewRepository.customQueryRatingInterface(query);
     }
     
     @GetMapping(value = "/getNumberOfReviewsByStrings/search{searchString}")

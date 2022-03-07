@@ -19,6 +19,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	List<Review> customQuery(String queryString);
 
 	Integer customNumberOfResultQuery(String queryString);
+	
+	List<RatingInterface> customQueryRatingInterface(String queryString);
 
 	@Query(value = "SELECT * FROM Reviews WHERE rating = :rating AND comment LIKE :comment", nativeQuery = true )
 	List<Review> getByRatingAndComment(@Param("rating") int rating, @Param("comment") String comment);
