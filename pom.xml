@@ -34,12 +34,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+ 			<exclusions>
+        		<exclusion>
+            		<groupId>org.junit.vintage</groupId>
+            		<artifactId>junit-vintage-engine</artifactId>
+        		</exclusion>
+    		</exclusions>
 		</dependency>
 		<dependency>
     		<groupId>com.microsoft.sqlserver</groupId>
     		<artifactId>mssql-jdbc</artifactId>
     		<version>10.2.0.jre11</version>
 		</dependency>
+
+
 
 	</dependencies>
 
