@@ -19,6 +19,13 @@ public class Review {
     @Column(name = "comment")
     String comment;
 
+    public Review() {}
+    
+    public Review(int rating, String comment) {
+    	this.rating = rating;
+    	this.comment = comment;
+    }
+    
     public Long getId() {
         return id;
     }

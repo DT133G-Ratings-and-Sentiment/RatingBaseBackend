@@ -1,5 +1,10 @@
 package com.dt002g.reviewapplication.backend.controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,18 +15,23 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dt002g.reviewapplication.backend.models.RatingInterface;
 import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
+import com.dt002g.reviewapplication.backend.services.ReviewService;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -29,6 +39,9 @@ public class ReviewController {
 
     @Autowired
     private ReviewRepository reviewRepository;
+    
+    @Autowired
+    private ReviewService reviewService;
 
     //  http://localhost:8080/api/v1/reviews/getAll
     @GetMapping("/getAll")
@@ -231,4 +244,24 @@ public class ReviewController {
         BeanUtils.copyProperties(reference, existingReference, "id");
         return reviewRepository.saveAndFlush(existingReference);
     }
+    
+    @RequestMapping(path= "/csvupload", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Object> uploadCSVFile(@RequestPart String description, @RequestPart MultipartFile csvFile){
+    	InputStream initialStream = null;
+    	try {
+    		initialStream = csvFile.getInputStream();
+    		byte[] buffer = new byte[initialStream.available()];
+    		initialStream.read(buffer);
+    		File targetFile = new File(csvFile.getOriginalFilename());
+    		try(OutputStream outStream = new FileOutputStream(targetFile)){
+    			outStream.write(buffer);
+    		}
+    		reviewService.insertCsvFileDataToDataBase(targetFile);
+    		
+    	}catch(IOException e) {
+    		e.printStackTrace();
+    	}
+    	return ResponseEntity.ok().build();
+    }
+    
 }
