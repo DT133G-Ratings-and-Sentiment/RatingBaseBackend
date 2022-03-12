@@ -61,11 +61,11 @@ public class ReviewController {
     @GetMapping
     @RequestMapping(value = "/getTopReviewsLargerThanId/{id}", method = RequestMethod.GET)
     public List<Review> getTopReviewsLargerThanId(@PathVariable Long id){
-    	List<Review> temp =  reviewRepository.findTop100ByIdGreaterThanOrderByIdAsc(id);
+    	/*List<Review> temp =  reviewRepository.findTop100ByIdGreaterThanOrderByIdAsc(id);
     	System.out.println("getTopReviewsFromId:" + temp.size());
-    	return temp;
-    	/*String query = "SELECT * FROM reviews WHERE id > "+ id + " ORDER BY id ASC LIMIT 100";
-    	return reviewRepository.customQuery(query);*/
+    	return temp;*/
+    	String query = "SELECT * FROM reviews WHERE id > "+ id + " ORDER BY id ASC LIMIT 100";
+    	return reviewRepository.customQuery(query);
     }
     
     //  http://localhost:8080/api/v1/reviews/getByString/{string} 
@@ -85,7 +85,10 @@ public class ReviewController {
     @GetMapping()
     @RequestMapping("/getTopReviewsByRatingLargerThanId/{rating}/{id}")
     public List<Review>  getTopReviewsByRatingLargerThanId(@PathVariable Integer rating, @PathVariable Long id){
-    	return reviewRepository.getTop100ByRatingAndIdGreaterThanId(rating, id);
+    	//return reviewRepository.getTop100ByRatingAndIdGreaterThanId(rating, id);
+    	
+    	String query = "SELECT * FROM reviews WHERE rating = " + rating + " and id > "+ id + " ORDER BY id ASC LIMIT 100";
+    	return reviewRepository.customQuery(query);
     }
     
     //  http://localhost:8080/api/v1/reviews/getByStrings/search?searchString1=cat&searchString2=dog etc... 
@@ -107,7 +110,7 @@ public class ReviewController {
     
     @GetMapping(value = "/getTopReviewsByStringsLargerThanId/{id}/search")
     public List<Review> getTopReviewsByStringsLargerThanId(@PathVariable Long id, HttpServletRequest request){
-    	String query = "SELECT TOP 100 * FROM reviews WHERE id > "+id+" and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+    	/*String query = "SELECT TOP 100 * FROM reviews WHERE id > "+id+" and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
     			
 		for(int i = 2; i <= 10; i++) {
 			try {
@@ -118,12 +121,25 @@ public class ReviewController {
 			}
 		}
 		
+	    return reviewRepository.customQuery(query);*/
+    	
+    	String query = "SELECT * FROM reviews WHERE id > "+id+" and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+		
+		for(int i = 2; i <= 10; i++) {
+			try {
+				query += "OR comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		query += " ORDER BY id ASC LIMIT 100";
 	    return reviewRepository.customQuery(query);
     }
     
     @GetMapping(value = "/getTopReviewsByInclusiveStringsLargerThanId/{id}/search")
     public List<Review> getTopReviewsByInclusiveStringsLargerThanId(@PathVariable Long id, HttpServletRequest request){
-    	String query = "SELECT TOP 100 * FROM reviews WHERE id > "+id+" and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+    	/*String query = "SELECT TOP 100 * FROM reviews WHERE id > "+id+" and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
     			
 		for(int i = 2; i <= 10; i++) {
 			try {
@@ -133,6 +149,20 @@ public class ReviewController {
 				break;
 			}
 		}
+		
+	    return reviewRepository.customQuery(query);*/
+    	
+    	String query = "SELECT * FROM reviews WHERE id > "+id+" and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+		
+		for(int i = 2; i <= 10; i++) {
+			try {
+				query += "AND comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		query += " ORDER BY id ASC LIMIT 100";
 		
 	    return reviewRepository.customQuery(query);
     }
@@ -154,7 +184,7 @@ public class ReviewController {
     }
     @GetMapping(value = "/getTopReviewsByRatingAndStringsLargerThanId/{id}/{rating}/search{searchString}")
     public List<Review> getTopReviewsByRatingAndStringsLargerThanId(@PathVariable Long id, @PathVariable Integer rating, HttpServletRequest request){
-    	String query = "SELECT TOP 100 * FROM reviews WHERE id > "+ id +" and rating = " + rating + " and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+    	/*String query = "SELECT TOP 100 * FROM reviews WHERE id > "+ id +" and rating = " + rating + " and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
     			
 		for(int i = 2; i <= 10; i++) {
 			try {
@@ -164,6 +194,20 @@ public class ReviewController {
 				break;
 			}
 		}
+		
+	    return reviewRepository.customQuery(query);*/
+    	
+    	String query = "SELECT * FROM reviews WHERE id > "+ id +" and rating = " + rating + " and comment LIKE '%" + request.getParameter("searchString1").toString() + "%'";
+		
+		for(int i = 2; i <= 10; i++) {
+			try {
+				query += "OR comment LIKE '%" +  request.getParameter("searchString" + i).toString() + "%'";
+			}
+			catch(NullPointerException e) {
+				break;
+			}
+		}
+		query += " ORDER BY id ASC LIMIT 100";
 		
 	    return reviewRepository.customQuery(query);
     }
