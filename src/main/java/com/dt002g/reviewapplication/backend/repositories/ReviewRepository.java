@@ -29,7 +29,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	List<Review> findByRating(int rating);
 	
 	public List<Review> findTop100ByOrderByIdAsc();
-	
+	//edit
 	public List<Review> findTop100ByIdGreaterThanOrderByIdAsc(Long id);
 	
 	@Query(value = "SELECT rating as rating , COUNT(comment) as amount FROM reviews WHERE comment LIKE :comment GROUP BY rating ORDER BY rating ASC", nativeQuery = true)

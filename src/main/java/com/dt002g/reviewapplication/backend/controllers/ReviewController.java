@@ -64,6 +64,8 @@ public class ReviewController {
     	List<Review> temp =  reviewRepository.findTop100ByIdGreaterThanOrderByIdAsc(id);
     	System.out.println("getTopReviewsFromId:" + temp.size());
     	return temp;
+    	/*String query = "SELECT * FROM reviews WHERE id > "+ id + " ORDER BY id ASC LIMIT 100";
+    	return reviewRepository.customQuery(query);*/
     }
     
     //  http://localhost:8080/api/v1/reviews/getByString/{string} 
