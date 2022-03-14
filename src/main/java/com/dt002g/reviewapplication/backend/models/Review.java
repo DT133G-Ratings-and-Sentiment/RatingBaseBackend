@@ -1,9 +1,6 @@
 package com.dt002g.reviewapplication.backend.models;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "Reviews")
@@ -29,23 +26,18 @@ public class Review {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public int getRating() {
         return rating;
     }
-
     public void setRating(int rating) {
         this.rating = rating;
     }
-
     public String getFreeText() {
         return comment;
     }
-
     public void setFreeText(String freeText) {
         this.comment = freeText;
     }

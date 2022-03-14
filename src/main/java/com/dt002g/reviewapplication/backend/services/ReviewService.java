@@ -1,17 +1,15 @@
 package com.dt002g.reviewapplication.backend.services;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
+import com.dt002g.reviewapplication.backend.models.Review;
+import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dt002g.reviewapplication.backend.models.Review;
-import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Service
 public class ReviewService {
@@ -35,15 +33,11 @@ public class ReviewService {
 			    	}
 			    }
 			    br.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
-			reviewRepository.saveAllAndFlush(data);
-			csvFile.delete();
+		reviewRepository.saveAllAndFlush(data);
+		csvFile.delete();
 		return numberOfReviewsAdded;
 	}
 }
