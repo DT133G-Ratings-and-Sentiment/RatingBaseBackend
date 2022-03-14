@@ -16,12 +16,10 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 @PropertySource(value = "file:application.properties", ignoreResourceNotFound = true)
 public class BackendApplication {
-
 	public static void main(String[] args) throws IOException {
 
 		SpringApplication.run(BackendApplication.class, args);
 	}
 	
-
 
 }
