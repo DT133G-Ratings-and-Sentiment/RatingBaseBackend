@@ -2,9 +2,15 @@ package com.dt002g.reviewapplication.backend;
 
 import java.io.IOException;
 
+import java.util.Properties;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 @SpringBootApplication
 
@@ -14,4 +20,6 @@ public class BackendApplication {
 
 		SpringApplication.run(BackendApplication.class, args);
 	}
+	
+
 }
