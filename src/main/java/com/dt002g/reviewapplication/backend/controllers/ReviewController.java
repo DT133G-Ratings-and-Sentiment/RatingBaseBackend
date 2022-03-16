@@ -149,7 +149,7 @@ public class ReviewController {
 				if(request.getParameter("searchString" + i) == null){
 					break;
 				}
-				query.append("OR rating =").append(rating).append(" and comment LIKE '%").append(request.getParameter("searchString" + i));
+				query.append("OR rating =").append(rating).append(" and comment LIKE '%").append(request.getParameter("searchString" + i) + "'");
 			}
 			System.out.println(query);
     		return reviewRepository.customQuery(query.toString());
@@ -160,7 +160,7 @@ public class ReviewController {
 			if(request.getParameter("searchString" + i) == null){
 				break;
 			}
-			query.append("OR rating =").append(rating).append(" and comment LIKE '%").append(request.getParameter("searchString" + i));
+			query.append("OR rating =").append(rating).append(" and comment LIKE '%").append(request.getParameter("searchString" + i) + "%'");
 		}
 		query.append(this.ORDERBYLIMIT);
 	    return reviewRepository.customQuery(query.toString());
@@ -177,12 +177,10 @@ public class ReviewController {
     public Map<String, Long> getNumberOfReviewsByStrings(HttpServletRequest request){
     	HashMap<String, Long> result = new HashMap<>();
 		for(int i = 1; i <= 10; i++) {
-			try {
-				result.put(request.getParameter("searchString" + i), reviewRepository.getCountOfReviewsWhereCommentContains("%" + request.getParameter("searchString" + i) + "%"));
-			}
-			catch(NullPointerException e) {
+			if(request.getParameter("searchString" + i) == null) {
 				break;
 			}
+			result.put(request.getParameter("searchString" + i), reviewRepository.getCountOfReviewsWhereCommentContains("%" + request.getParameter("searchString" + i) + "%"));
 		}
 	    return result;
     }

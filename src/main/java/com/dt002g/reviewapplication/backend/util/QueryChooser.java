@@ -1,5 +1,8 @@
 package com.dt002g.reviewapplication.backend.util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
@@ -23,7 +26,9 @@ public class QueryChooser {
 	@PostConstruct
 	public void init() {
 		environment = env;
-		System.out.println("Environment loaded: " + (environment == env));
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");  
+		LocalDateTime now = LocalDateTime.now();  
+		System.out.println(dtf.format(now) + " Environment loaded: " + (environment == env));
 	}
 	
 	public static String getDatabaseDialect() {
@@ -31,7 +36,6 @@ public class QueryChooser {
 		int firstIndex = url.indexOf(":");
 		int secondIndex = url.indexOf(":", firstIndex + 1);
 		String dialect = url.substring(firstIndex + 1, secondIndex);
-		System.out.println(dialect);
 		return dialect;
 	}
 }

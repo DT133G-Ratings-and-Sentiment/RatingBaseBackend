@@ -22,7 +22,7 @@ class BackendApplicationTests {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	final private String searchExtension = "search?searchString1=test&searchString2=tester";
+	final private String searchExtension = "search?searchString1=good&searchString2=cat";
 	final private String searchExtensionWithRating = "search?rating=1&comment=test";
 	final private String api = "/api/v1/reviews/";
 
