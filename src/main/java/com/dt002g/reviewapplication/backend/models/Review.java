@@ -1,5 +1,8 @@
 package com.dt002g.reviewapplication.backend.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,12 +18,18 @@ public class Review {
 
     @Column(name = "comment")
     String comment;
+    
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "reviews_id")
+    private List<Sentence> sentences;
 
     public Review() {}
     
-    public Review(int rating, String comment) {
+    public Review(int rating, String comment, List<Sentence> pSentences) {
+    	sentences = new ArrayList<Sentence>();
     	this.rating = rating;
     	this.comment = comment;
+    	sentences.addAll(pSentences);
     }
     
     public Long getId() {
