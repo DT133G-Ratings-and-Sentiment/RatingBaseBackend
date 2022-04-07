@@ -44,11 +44,11 @@ public class ReviewService {
 				ArrayList<SentenceToAdjective> sTA = new ArrayList<>();
 				int score = -10;
 		    	String[] tempData = line.split(";#");
-		    	if(tempData.length == 4) {
+		    	System.out.println("tempdata length: " + tempData.length);
+		    	if(tempData.length == 3) {
 		    		System.out.println("tempData > 2");
 			    	int rating = Integer.parseInt(tempData[0]);
 			    	String comment = tempData[1];
-			    	score = Integer.parseInt(tempData[3]);
 			    	String[] sentenceData = tempData[2].split(";@");
 			    	ArrayList<Sentence> sentences = new ArrayList<>();
 			    	for(String s: sentenceData) {
@@ -64,13 +64,17 @@ public class ReviewService {
 				    				grades.add(Double.parseDouble(gradesData[i]));
 				    			}
 				    		}
+				    		int totalScore = -10;
+				    		if(sentenceDataParts.length > 2) {
+				    			totalScore = Integer.parseInt(sentenceDataParts[2]);
+				    		}
 				    		System.out.println("Number of Grades: " + grades.size());
-				    		if(grades.size() == 5) {					    			
-				    			sentences.add(new Sentence(sentenceDataParts[0], grades));
+				    		if(grades.size() == 5 && sentenceDataParts.length > 2) {					    			
+				    			sentences.add(new Sentence(sentenceDataParts[0], grades, totalScore));
 				    		}
 				    		System.out.println("Number of sentence added: " + sentences.size());
-				    		if(sentenceDataParts.length > 2) {
-				    			adjectivesData = sentenceDataParts[2].split(";¤");
+				    		if(sentenceDataParts.length > 3) {
+				    			adjectivesData = sentenceDataParts[3].split(";¤");
 				    			for(String a: adjectivesData) {
 				    				List<Adjective> temp = adjectiveRepository.getByAdjective(a);
 				    				Pair<Adjective, Sentence> adSen = new Pair<Adjective, Sentence>();
@@ -92,7 +96,7 @@ public class ReviewService {
 				    		}
 			    		}
 			    	}
-			    	Review rev = new Review(rating, tempData[1], sentences, score);
+			    	Review rev = new Review(rating, tempData[1], sentences);
 			    	rev = reviewRepository.saveAndFlush(rev);
 			    	adjectiveRepository.flush();
 			    	ArrayList<SentenceToAdjective> sToA = new ArrayList<>();

@@ -38,12 +38,16 @@ public class Sentence {
 	@Column(name="very_negative")
 	double veryNegative;
 	
+	@Column(name="score")
+	int score;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="reviews_id")
 	Review review;
 
-	public Sentence(String text, List<Double> grades) {
+	public Sentence(String text, List<Double> grades, int score) {
 		this.text = text;
+		this.score = score;
 		if(grades.size() == 5) {
 			this.veryPositive = grades.get(0);
 			this.positive = grades.get(1);
@@ -116,6 +120,16 @@ public class Sentence {
 	public void setReview(Review review) {
 		this.review = review;
 	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	
 
 	
 }
