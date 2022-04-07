@@ -22,14 +22,18 @@ public class Review {
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "reviews_id")
     private List<Sentence> sentences;
+    
+    @Column(name="score")
+    int score;
 
     public Review() {}
     
-    public Review(int rating, String comment, List<Sentence> pSentences) {
+    public Review(int rating, String comment, List<Sentence> pSentences, int score) {
     	sentences = new ArrayList<Sentence>();
     	this.rating = rating;
     	this.comment = comment;
     	sentences.addAll(pSentences);
+    	this.score = score;
     }
     
     public Long getId() {
@@ -44,10 +48,30 @@ public class Review {
     public void setRating(int rating) {
         this.rating = rating;
     }
-    public String getFreeText() {
-        return comment;
-    }
-    public void setFreeText(String freeText) {
-        this.comment = freeText;
-    }
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public List<Sentence> getSentences() {
+		return sentences;
+	}
+
+	public void setSentences(List<Sentence> sentences) {
+		this.sentences = sentences;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+    
 }

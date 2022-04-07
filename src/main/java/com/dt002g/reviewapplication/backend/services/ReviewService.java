@@ -42,11 +42,13 @@ public class ReviewService {
 		    while ((line = br.readLine()) != null) {
 				ArrayList<Pair<Adjective, Sentence>> adjectives = new ArrayList<>();
 				ArrayList<SentenceToAdjective> sTA = new ArrayList<>();
+				int score = -10;
 		    	String[] tempData = line.split(";#");
-		    	if(tempData.length >= 2) {
+		    	if(tempData.length == 4) {
 		    		System.out.println("tempData > 2");
 			    	int rating = Integer.parseInt(tempData[0]);
 			    	String comment = tempData[1];
+			    	score = Integer.parseInt(tempData[3]);
 			    	String[] sentenceData = tempData[2].split(";@");
 			    	ArrayList<Sentence> sentences = new ArrayList<>();
 			    	for(String s: sentenceData) {
@@ -90,7 +92,7 @@ public class ReviewService {
 				    		}
 			    		}
 			    	}
-			    	Review rev = new Review(rating, tempData[1], sentences);
+			    	Review rev = new Review(rating, tempData[1], sentences, score);
 			    	rev = reviewRepository.saveAndFlush(rev);
 			    	adjectiveRepository.flush();
 			    	ArrayList<SentenceToAdjective> sToA = new ArrayList<>();
