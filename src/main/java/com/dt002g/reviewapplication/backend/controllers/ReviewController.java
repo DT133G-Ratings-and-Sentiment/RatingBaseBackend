@@ -256,4 +256,10 @@ public class ReviewController {
 		}
 		return query.toString();
 	}
+	
+    @GetMapping()
+    @RequestMapping(value="getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ/{rating}/{minScore}/{maxScore}")
+    public Long getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ(@PathVariable int rating, @PathVariable double minScore, @PathVariable double maxScore){
+    	return reviewRepository.getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ(rating, minScore, maxScore);
+    }
 }
