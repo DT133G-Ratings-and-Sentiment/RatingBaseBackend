@@ -6,9 +6,14 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Embeddable
 public class SentenceToAdjectiveId implements Serializable{
+	
 	private Sentence sentence;
+	
+	
 	private Adjective adjective;
 	
 	public SentenceToAdjectiveId() {
@@ -20,6 +25,7 @@ public class SentenceToAdjectiveId implements Serializable{
 		this.adjective = a;
 	}
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "sentence_id")
 	public Sentence getSentence() {
@@ -30,6 +36,7 @@ public class SentenceToAdjectiveId implements Serializable{
 		this.sentence = s;
 	}
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "adjective_id")
 	public Adjective getAdjective() {

@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name= "sentence_2_adjective")
 @AssociationOverrides({
@@ -16,6 +18,8 @@ import javax.persistence.Transient;
 	@AssociationOverride(name="id.adjective", joinColumns = @JoinColumn(name = "adjective_id"))
 })
 public class SentenceToAdjective {
+	
+
 	SentenceToAdjectiveId id = new SentenceToAdjectiveId();
 	
 	private double numberOfOccurence;
@@ -23,6 +27,7 @@ public class SentenceToAdjective {
 	public SentenceToAdjective() {
 		
 	}
+	
 	
 	public SentenceToAdjective(Sentence s, Adjective a, double nOO) {
 		this.id = new SentenceToAdjectiveId(s, a);
@@ -39,6 +44,7 @@ public class SentenceToAdjective {
 		this.numberOfOccurence = nOO;
 	}
 	
+	@JsonBackReference
 	@Transient
 	public Sentence getSentence() {
 		return id.getSentence();
@@ -48,6 +54,7 @@ public class SentenceToAdjective {
 		this.id.setSentence(s);
 	}
 	
+	@JsonBackReference
 	@Transient
 	public Adjective getAdjective() {
 		return id.getAdjective();
@@ -57,6 +64,7 @@ public class SentenceToAdjective {
 		this.id.setAdjective(a);
 	}
 	
+	@JsonBackReference
 	@EmbeddedId
 	public SentenceToAdjectiveId getId() { return id;}
 	public void setId(SentenceToAdjectiveId id) { this .id = id;}

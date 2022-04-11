@@ -1,5 +1,6 @@
 package com.dt002g.reviewapplication.backend.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.List;
 
 @Entity
@@ -41,10 +47,19 @@ public class Sentence {
 	@Column(name="score")
 	int score;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy="id.sentence", cascade = CascadeType.ALL)
+	List<SentenceToAdjective> sentenceToAdjectives;
+	
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="reviews_id")
 	Review review;
 
+	public Sentence() {
+		
+	}
+	
 	public Sentence(String text, List<Double> grades, int score) {
 		this.text = text;
 		this.score = score;
@@ -128,6 +143,15 @@ public class Sentence {
 	public void setScore(int score) {
 		this.score = score;
 	}
+
+	public List<SentenceToAdjective> getSentenceToAdjectives() {
+		return sentenceToAdjectives;
+	}
+
+	public void setSentenceToAdjectives(List<SentenceToAdjective> sentenceToAdjectives) {
+		this.sentenceToAdjectives = sentenceToAdjectives;
+	}
+	
 	
 	
 

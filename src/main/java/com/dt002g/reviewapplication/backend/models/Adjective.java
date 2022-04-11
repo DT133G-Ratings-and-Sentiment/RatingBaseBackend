@@ -1,11 +1,17 @@
 package com.dt002g.reviewapplication.backend.models;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "adjective")
@@ -18,6 +24,12 @@ public class Adjective {
 	@Column(name = "word")
 	String word;
 
+	@JsonManagedReference
+	@OneToMany(mappedBy="id.adjective", cascade = CascadeType.ALL)
+	List<SentenceToAdjective> sentenceToAdjectives;
+	
+	public Adjective() {}
+	
 	public Adjective(String adjective){
 		this.word = adjective;
 	}
@@ -37,6 +49,15 @@ public class Adjective {
 	public void setWord(String word) {
 		this.word = word;
 	}
+
+	public List<SentenceToAdjective> getSentenceToAdjectives() {
+		return sentenceToAdjectives;
+	}
+
+	public void setSentenceToAdjectives(List<SentenceToAdjective> sentenceToAdjectives) {
+		this.sentenceToAdjectives = sentenceToAdjectives;
+	}
+	
 	
 	
 	

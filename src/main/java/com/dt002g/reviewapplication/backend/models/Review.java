@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "Reviews")
 public class Review {
@@ -19,6 +21,7 @@ public class Review {
     @Column(name = "comment")
     String comment;
     
+    @JsonManagedReference
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "reviews_id")
     private List<Sentence> sentences;
