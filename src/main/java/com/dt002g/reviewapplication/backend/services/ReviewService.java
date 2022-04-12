@@ -2,6 +2,7 @@ package com.dt002g.reviewapplication.backend.services;
 
 import com.dt002g.reviewapplication.backend.models.Adjective;
 import com.dt002g.reviewapplication.backend.models.Review;
+import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
 import com.dt002g.reviewapplication.backend.models.SentenceToAdjective;
 import com.dt002g.reviewapplication.backend.models.Sentence;
 import com.dt002g.reviewapplication.backend.models.SentenceToAdjectiveId;
@@ -131,5 +132,25 @@ public class ReviewService {
 		//reviewRepository.saveAllAndFlush(data);
 		csvFile.delete();
 		return numberOfReviewsAdded;
+	}
+	
+	public List<ReviewRatingByScore> getNumberOfRewiewsByRatingAndScoreMatrix() {
+		ArrayList<ReviewRatingByScore>  ReviewRatingByScoreMatrix = new ArrayList<>();
+		
+		ArrayList<Pair<Double, Double>> minMaxScores = new ArrayList<>();
+		minMaxScores.add(new Pair<Double, Double>(1.0, 1.5));
+		minMaxScores.add(new Pair<Double, Double>(1.5, 2.5));
+		minMaxScores.add(new Pair<Double, Double>(2.5, 3.5));
+		minMaxScores.add(new Pair<Double, Double>(3.5, 4.5));
+		minMaxScores.add(new Pair<Double, Double>(4.5, 5.0));
+		
+		for(int rating = 0; rating <= 100; rating++) {
+			for(Pair<Double, Double> minMaxScore: minMaxScores) {
+				Long amount = reviewRepository.getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ(rating, minMaxScore.first, minMaxScore.second);
+				ReviewRatingByScoreMatrix.add(new ReviewRatingByScore(rating, minMaxScore.first, minMaxScore.second, amount));
+			}
+		}
+		
+		return ReviewRatingByScoreMatrix;
 	}
 }
