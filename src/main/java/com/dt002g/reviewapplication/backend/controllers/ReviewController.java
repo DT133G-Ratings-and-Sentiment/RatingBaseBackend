@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dt002g.reviewapplication.backend.models.RatingInterface;
 import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
+import com.dt002g.reviewapplication.backend.repositories.AdjectiveRepository;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import com.dt002g.reviewapplication.backend.services.ReviewService;
 import com.dt002g.reviewapplication.backend.util.QueryChooser;
@@ -45,6 +46,9 @@ public class ReviewController {
     
     @Autowired
     private ReviewService reviewService;
+    
+    @Autowired
+    private AdjectiveRepository adjectiveRepository;
 
     //  http://localhost:8080/api/v1/reviews/getAll
     @GetMapping("/getAll")
@@ -259,14 +263,20 @@ public class ReviewController {
 	}
 	
     @GetMapping()
-    @RequestMapping(value="getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ/{rating}/{minScore}/{maxScore}")
+    @RequestMapping(value="/getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ/{rating}/{minScore}/{maxScore}")
     public Long getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ(@PathVariable int rating, @PathVariable double minScore, @PathVariable double maxScore){
     	return reviewRepository.getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ(rating, minScore, maxScore);
     }
     
     @GetMapping()
-    @RequestMapping(value="getNumberOfRewiewsByRatingAndScoreMatrix")
+    @RequestMapping(value="/getNumberOfRewiewsByRatingAndScoreMatrix")
     public List<ReviewRatingByScore> getNumberOfRewiewsByRatingAndScoreMatrix(){
     	return reviewService.getNumberOfRewiewsByRatingAndScoreMatrix();
+    }
+    
+    @GetMapping()
+    @RequestMapping(value="/getNumberOfTimesAdjectiveCorrelate/{adjective}/{minRating}/{maxRating}")
+    public Long getNumberOfTimesAdjectiveCorrelate(@PathVariable String adjective, @PathVariable int minRating, @PathVariable int maxRating){
+    	return adjectiveRepository.getNumberOfTimesAdjectiveCorrelate(adjective, minRating, maxRating);
     }
 }
