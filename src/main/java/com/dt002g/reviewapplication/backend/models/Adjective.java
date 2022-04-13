@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -25,6 +26,7 @@ public class Adjective {
 	String word;
 
 	@JsonManagedReference
+	@Transient
 	@OneToMany(mappedBy="id.adjective", cascade = CascadeType.ALL)
 	List<SentenceToAdjective> sentenceToAdjectives;
 	

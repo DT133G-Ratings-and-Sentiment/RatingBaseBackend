@@ -112,7 +112,7 @@ public class ReviewService {
 			    			sToA.add(new SentenceToAdjective(adSen.second, adSen.first, 1));
 			    		}
 			    		else {
-			    			System.out.println("SentenceToAdjective exist: id: " + senToAd.get(0).getId() + " word: " + senToAd.get(0).getAdjective().getWord() + " Sentence: " + senToAd.get(0).getSentence());
+			    			//System.out.println("SentenceToAdjective exist: id: " + senToAd.get(0).getId() + " word: " + senToAd.get(0).getAdjective().getWord() + " Sentence: " + senToAd.get(0).getSentence());
 			    			senToAd.get(0).setNumberOfOccurence(senToAd.get(0).getNumberOfOccurence() +1);
 			    			sToA.add(senToAd.get(0));
 			    		}

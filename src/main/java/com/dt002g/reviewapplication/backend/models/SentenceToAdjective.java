@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -23,6 +25,10 @@ public class SentenceToAdjective {
 	SentenceToAdjectiveId id = new SentenceToAdjectiveId();
 	
 	private double numberOfOccurence;
+	
+	//private Sentence sentence;
+	
+	//private Adjective adjective;
 	
 	public SentenceToAdjective() {
 		
@@ -54,7 +60,7 @@ public class SentenceToAdjective {
 		this.id.setSentence(s);
 	}
 	
-	@JsonBackReference
+	/*@JsonBackReference
 	@Transient
 	public Adjective getAdjective() {
 		return id.getAdjective();
@@ -62,10 +68,38 @@ public class SentenceToAdjective {
 	
 	public void setAdjective(Adjective a) {
 		this.id.setAdjective(a);
-	}
+	}*/
 	
 	@JsonBackReference
 	@EmbeddedId
 	public SentenceToAdjectiveId getId() { return id;}
 	public void setId(SentenceToAdjectiveId id) { this .id = id;}
+
+
+	/*@ManyToOne
+    @MapsId("sentence_id")
+    @JoinColumn(name = "sentence_id")
+	public Sentence getSentence() {
+		return sentence;
+	}
+
+
+	public void setSentence(Sentence sentence) {
+		this.sentence = sentence;
+	}*/
+
+	
+	@ManyToOne
+    @MapsId("adjective_id")
+    @JoinColumn(name = "adjective_id")
+	public Adjective getAdjective() {
+		return id.getAdjective();
+	}
+
+
+	public void setAdjective(Adjective adjective) {
+		this.id.setAdjective(adjective);
+	}
+	
+	
 }
