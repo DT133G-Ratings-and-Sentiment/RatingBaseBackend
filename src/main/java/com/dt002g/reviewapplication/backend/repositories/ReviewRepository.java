@@ -40,7 +40,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	/*@Query(value = "select count(*) from reviews r2 where (select sum(s.score)/count(*) from reviews r inner join sentence s on r.id = s.reviews_id where r.rating = :rating and r.id =r2.id) > :minScore and (select sum(s.score)/count(*) from reviews r inner join sentence s on r.id = s.reviews_id where r.id =r2.id)< :maxScore", nativeQuery = true)
 	long getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ(int rating, double minScore, double maxScore);*/
 	
-	@Query(value = "select count(*) from reviews r2 where (select (((sum(s.score)- count(*))/4)/count(*))*100 from reviews r inner join sentence s on r.id = s.reviews_id where r.rating = :rating and r.id =r2.id) > :minScore and (select (((sum(s.score)- count(*))/4)/count(*))*100 from reviews r inner join sentence s on r.id = s.reviews_id where r.id =r2.id)< :maxScore", nativeQuery = true)
+	@Query(value = "select count(*) from reviews r2 where (select (((sum(s.score)- count(*))/4)/count(*))*100 from reviews r inner join sentence s on r.id = s.reviews_id where r.rating = :rating and r.id =r2.id) >= :minScore and (select (((sum(s.score)- count(*))/4)/count(*))*100 from reviews r inner join sentence s on r.id = s.reviews_id where r.id =r2.id)< :maxScore", nativeQuery = true)
 	long getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ(int rating, double minScore, double maxScore);
 }
 

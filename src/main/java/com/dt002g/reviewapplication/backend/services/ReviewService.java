@@ -138,11 +138,11 @@ public class ReviewService {
 		ArrayList<ReviewRatingByScore>  ReviewRatingByScoreMatrix = new ArrayList<>();
 		
 		ArrayList<Pair<Double, Double>> minMaxScores = new ArrayList<>();
-		minMaxScores.add(new Pair<Double, Double>(1.0, 1.5));
-		minMaxScores.add(new Pair<Double, Double>(1.5, 2.5));
-		minMaxScores.add(new Pair<Double, Double>(2.5, 3.5));
-		minMaxScores.add(new Pair<Double, Double>(3.5, 4.5));
-		minMaxScores.add(new Pair<Double, Double>(4.5, 5.0));
+		minMaxScores.add(new Pair<Double, Double>(0.0, 20.0));
+		minMaxScores.add(new Pair<Double, Double>(20.0, 40.0));
+		minMaxScores.add(new Pair<Double, Double>(40.0, 60.0));
+		minMaxScores.add(new Pair<Double, Double>(60.0, 80.0));
+		minMaxScores.add(new Pair<Double, Double>(80.0, 100.0));
 		
 		for(int rating = 0; rating <= 100; rating++) {
 			for(Pair<Double, Double> minMaxScore: minMaxScores) {
@@ -151,6 +151,18 @@ public class ReviewService {
 			}
 		}
 		
+		/*long total = 0;
+		for(ReviewRatingByScore r: ReviewRatingByScoreMatrix) {
+			long amount = 0;
+			for(int rating = 0; rating <= 100; rating++) {
+				if(r.getRating() == rating) {
+					amount += r.getAmount();
+					total += amount;
+				}
+			}
+			System.out.println("Rating: " + r.getRating() + " minScore: " + r.getMinScore() + " maxScore: " + r.getMaxScore() + " Amount: " + amount);
+		}
+		System.out.println("Total: " + total);*/
 		return ReviewRatingByScoreMatrix;
 	}
 	
