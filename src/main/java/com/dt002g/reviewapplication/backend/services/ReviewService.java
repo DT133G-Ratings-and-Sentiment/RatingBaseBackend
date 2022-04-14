@@ -128,9 +128,13 @@ public class ReviewService {
 		    br.close();
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			csvFile.delete();	
 		}
 		//reviewRepository.saveAllAndFlush(data);
-		csvFile.delete();
 		return numberOfReviewsAdded;
 	}
 	
