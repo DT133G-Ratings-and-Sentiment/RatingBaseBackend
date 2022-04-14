@@ -46,9 +46,11 @@ public class ReviewService {
 				int score = -10;
 		    	String[] tempData = line.split(";#");
 		    	System.out.println("tempdata length: " + tempData.length);
-		    	if(tempData.length == 3) {
+		    	if(tempData.length == 5) {
 		    		System.out.println("tempData > 2");
 			    	int rating = Integer.parseInt(tempData[0]);
+			    	double averageScore = Double.parseDouble(tempData[3]);
+			    	double medianScore = Double.parseDouble(tempData[4]);
 			    	String comment = tempData[1];
 			    	String[] sentenceData = tempData[2].split(";@");
 			    	ArrayList<Sentence> sentences = new ArrayList<>();
@@ -67,16 +69,24 @@ public class ReviewService {
 				    		}
 				    		int totalScore = -10;
 				    		if(sentenceDataParts.length > 2) {
+				    			System.out.println("sentenceDataParts[2]: " + sentenceDataParts[2]);
 				    			totalScore = Integer.parseInt(sentenceDataParts[2]);
 				    		}
+				    		double normalisedScore = -10;
+				    		if(sentenceDataParts.length > 3) {
+				    			System.out.println("sentenceDataParts[3]: " + sentenceDataParts[3]);
+				    			normalisedScore = Double.parseDouble(sentenceDataParts[3]);
+				    		}
 				    		System.out.println("Number of Grades: " + grades.size());
-				    		if(grades.size() == 5 && sentenceDataParts.length > 2) {					    			
-				    			sentences.add(new Sentence(sentenceDataParts[0], grades, totalScore));
+				    		if(grades.size() == 5 && sentenceDataParts.length > 3) {					    			
+				    			sentences.add(new Sentence(sentenceDataParts[0], grades, totalScore, normalisedScore));
 				    		}
 				    		System.out.println("Number of sentence added: " + sentences.size());
-				    		if(sentenceDataParts.length > 3) {
-				    			adjectivesData = sentenceDataParts[3].split(";¤");
+				    		if(sentenceDataParts.length > 4) {
+				    			System.out.println("Add adjectives");
+				    			adjectivesData = sentenceDataParts[4].split(";¤");
 				    			for(String a: adjectivesData) {
+					    			System.out.println("Add adjectives: "+ a);
 				    				List<Adjective> temp = adjectiveRepository.getByAdjective(a);
 				    				Pair<Adjective, Sentence> adSen = new Pair<Adjective, Sentence>();
 				    				if(temp == null || temp.size()< 1) {
@@ -97,7 +107,7 @@ public class ReviewService {
 				    		}
 			    		}
 			    	}
-			    	Review rev = new Review(rating, tempData[1], sentences);
+			    	Review rev = new Review(rating, tempData[1], sentences, averageScore, medianScore);
 			    	rev = reviewRepository.saveAndFlush(rev);
 			    	adjectiveRepository.flush();
 			    	ArrayList<SentenceToAdjective> sToA = new ArrayList<>();
@@ -127,9 +137,9 @@ public class ReviewService {
 		    }
 		    br.close();
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			System.out.println("error: " + e.getMessage() + e.getStackTrace());
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("error: " + e.getMessage() + e.getStackTrace());
 		}
 		finally {
 			csvFile.delete();	

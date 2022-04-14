@@ -47,6 +47,9 @@ public class Sentence {
 	@Column(name="score")
 	int score;
 	
+	@Column(name="normalised_score")
+	double normalisedScore;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy="id.sentence", cascade = CascadeType.ALL)
 	List<SentenceToAdjective> sentenceToAdjectives;
@@ -60,7 +63,7 @@ public class Sentence {
 		
 	}
 	
-	public Sentence(String text, List<Double> grades, int score) {
+	public Sentence(String text, List<Double> grades, int score, double normalisedScore) {
 		this.text = text;
 		this.score = score;
 		if(grades.size() == 5) {
@@ -70,6 +73,7 @@ public class Sentence {
 			this.negative = grades.get(3);
 			this.veryNegative = grades.get(4);
 		}
+		this.normalisedScore = normalisedScore;
 	}
 	
 	public Long getId() {
@@ -150,6 +154,14 @@ public class Sentence {
 
 	public void setSentenceToAdjectives(List<SentenceToAdjective> sentenceToAdjectives) {
 		this.sentenceToAdjectives = sentenceToAdjectives;
+	}
+
+	public double getNormalisedScore() {
+		return normalisedScore;
+	}
+
+	public void setNormalisedScore(double normalisedScore) {
+		this.normalisedScore = normalisedScore;
 	}
 	
 	

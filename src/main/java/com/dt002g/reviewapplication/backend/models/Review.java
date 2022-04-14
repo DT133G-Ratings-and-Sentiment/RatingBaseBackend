@@ -26,13 +26,22 @@ public class Review {
     @JoinColumn(name = "reviews_id")
     private List<Sentence> sentences;
 
+    @Column(name= "normalised_average_sentence_score")
+    double normalisedAverageSentenceScore;
+    
+    @Column(name="normalised_median_sentence_score")
+    double normalisedMedianSentenceScore;
+    
     public Review() {}
     
-    public Review(int rating, String comment, List<Sentence> pSentences) {
+    public Review(int rating, String comment, List<Sentence> pSentences, double normalisedAverageSentenceScore, double normalisedMedianSentenceScore) {
     	sentences = new ArrayList<Sentence>();
     	this.rating = rating;
     	this.comment = comment;
     	sentences.addAll(pSentences);
+    	this.normalisedAverageSentenceScore = normalisedAverageSentenceScore;
+    	this.normalisedMedianSentenceScore = normalisedMedianSentenceScore;
+    	
     }
     
     public Long getId() {
@@ -64,5 +73,22 @@ public class Review {
 		this.sentences = sentences;
 	}
 
+	public double getNormalisedAverageSentenceScore() {
+		return normalisedAverageSentenceScore;
+	}
+
+	public void setNormalisedAverageSentenceScore(double normalisedAverageSentenceScore) {
+		this.normalisedAverageSentenceScore = normalisedAverageSentenceScore;
+	}
+
+	public double getNormalisedMedianSentenceScore() {
+		return normalisedMedianSentenceScore;
+	}
+
+	public void setNormalisedMedianSentenceScore(double normalisedMedianSentenceScore) {
+		this.normalisedMedianSentenceScore = normalisedMedianSentenceScore;
+	}
+
+	
     
 }
