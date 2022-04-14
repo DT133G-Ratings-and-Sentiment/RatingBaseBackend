@@ -14,8 +14,10 @@ CREATE TABLE `reviews` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `rating` int(11) DEFAULT NULL,
   `comment` varchar(2000) COLLATE utf16_unicode_ci DEFAULT NULL,
+  `normalised_average_sentence_score` decimal(11,0) DEFAULT NULL,
+  `normalised_median_sentence_score` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=429465 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=449303 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
 
 CREATE TABLE `sentence` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,8 +29,9 @@ CREATE TABLE `sentence` (
   `very_negative` decimal(11,0) DEFAULT NULL,
   `reviews_id` int(11) DEFAULT NULL,
   `score` int(11) DEFAULT NULL,
+  `normalised_score` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62855 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
 
 CREATE TABLE `sentence_2_adjective` (
   `sentence_id` int(11) NOT NULL,
