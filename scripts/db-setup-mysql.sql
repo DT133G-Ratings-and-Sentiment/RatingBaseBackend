@@ -13,7 +13,7 @@ CREATE TABLE `adjective` (
 CREATE TABLE `reviews` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `rating` int(11) DEFAULT NULL,
-  `comment` varchar(1000) COLLATE utf16_unicode_ci DEFAULT NULL,
+  `comment` varchar(2000) COLLATE utf16_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=429465 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
 
