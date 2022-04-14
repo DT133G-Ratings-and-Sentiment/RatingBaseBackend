@@ -19,7 +19,7 @@ CREATE TABLE `reviews` (
 
 CREATE TABLE `sentence` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `text` varchar(500) COLLATE utf16_unicode_ci DEFAULT NULL,
+  `text` varchar(2000) COLLATE utf16_unicode_ci DEFAULT NULL,
   `very_positive` decimal(11,0) DEFAULT NULL,
   `positive` decimal(11,0) DEFAULT NULL,
   `neutral` decimal(11,0) DEFAULT NULL,
