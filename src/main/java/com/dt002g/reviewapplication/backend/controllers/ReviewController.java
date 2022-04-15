@@ -154,9 +154,12 @@ public class ReviewController {
 				if(request.getParameter("searchString" + i) == null){
 					break;
 				}
-				query.append("OR rating =").append(rating).append(" and comment LIKE '%").append(request.getParameter("searchString" + i) + "'");
+				query.append("OR rating =")
+						.append(rating)
+						.append(" and comment LIKE '%")
+						.append(request.getParameter("searchString" + i))
+						.append("'");
 			}
-			System.out.println(query);
     		return reviewRepository.customQuery(query.toString());
     	}
     	
@@ -165,7 +168,11 @@ public class ReviewController {
 			if(request.getParameter("searchString" + i) == null){
 				break;
 			}
-			query.append("OR rating =").append(rating).append(" and comment LIKE '%").append(request.getParameter("searchString" + i) + "%'");
+			query.append("OR rating =")
+					.append(rating)
+					.append(" and comment LIKE '%")
+					.append(request.getParameter("searchString" + i))
+					.append("%'");
 		}
 		query.append(this.ORDERBYLIMIT);
 	    return reviewRepository.customQuery(query.toString());
@@ -257,7 +264,9 @@ public class ReviewController {
 				if(request.getParameter("searchString" + i) == null){
 					break;
 				}
-				query.append(operator).append(" comment LIKE '%").append(request.getParameter("searchString" + i)).append("%'");
+				query.append(operator).append(" comment LIKE '%")
+						.append(request.getParameter("searchString" + i))
+						.append("%'");
 		}
 		return query.toString();
 	}
@@ -269,10 +278,16 @@ public class ReviewController {
     }
     
     @GetMapping()
-    @RequestMapping(value="/getNumberOfRewiewsByRatingAndScoreMatrix")
-    public List<ReviewRatingByScore> getNumberOfRewiewsByRatingAndScoreMatrix(){
+    @RequestMapping(value="/getNumberOfReviewsByRatingAndScoreMatrix")
+    public List<ReviewRatingByScore> getNumberOfReviewsByRatingAndScoreMatrix(){
     	return reviewService.getNumberOfRewiewsByRatingAndScoreMatrix();
     }
+
+	@GetMapping()
+	@RequestMapping(value="/getNumberOfReviewsByRatingAndScoreMatrixMedian")
+	public List<ReviewRatingByScore> getNumberOfReviewsByRatingAndScoreMatrixMedian(){
+		return reviewService.getNumberOfReviewsByRatingAndScoreMatrixMedian();
+	}
     
     @GetMapping()
     @RequestMapping(value="/getNumberOfTimesAdjectiveCorrelate/{adjective}/{minRating}/{maxRating}")

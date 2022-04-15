@@ -45,5 +45,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	
 	@Query(value = "select count(*) from reviews r2 where r2.rating = :rating and r2.normalised_average_sentence_score >= :minScore and r2.normalised_average_sentence_score < :maxScore", nativeQuery = true)
 	long getNumberOfRewiewsWithRatingXAndScoreBiggerThanYAndLesserThanZ(int rating, double minScore, double maxScore);
+
+	@Query(value = "select count(*) from reviews r2 where r2.rating = :rating and r2.normalised_median_sentence_score >= :minScore and r2.normalised_median_sentence_score < :maxScore", nativeQuery = true)
+	long getCountOfScoreAndRatingMedian(int rating, double minScore, double maxScore);
 }
 

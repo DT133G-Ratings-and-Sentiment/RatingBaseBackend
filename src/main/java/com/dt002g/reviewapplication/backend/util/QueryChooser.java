@@ -35,7 +35,6 @@ public class QueryChooser {
 		String url = environment.getProperty("spring.datasource.url");
 		int firstIndex = url.indexOf(":");
 		int secondIndex = url.indexOf(":", firstIndex + 1);
-		String dialect = url.substring(firstIndex + 1, secondIndex);
-		return dialect;
+		return url.substring(firstIndex + 1, secondIndex);
 	}
 }
