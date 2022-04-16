@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dt002g.reviewapplication.backend.models.AdjectiveByReviewRatingAndScore;
 import com.dt002g.reviewapplication.backend.models.RatingInterface;
 import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
@@ -290,8 +291,22 @@ public class ReviewController {
 	}
     
     @GetMapping()
-    @RequestMapping(value="/getNumberOfTimesAdjectiveCorrelate/{adjective}/{minRating}/{maxRating}")
-    public Long getNumberOfTimesAdjectiveCorrelate(@PathVariable String adjective, @PathVariable int minRating, @PathVariable int maxRating){
-    	return adjectiveRepository.getNumberOfTimesAdjectiveCorrelate(adjective, minRating, maxRating);
+    @RequestMapping(value="/getNumberOfTimesAdjectiveCorrelate/{adjective}/{minRating}/{maxRating}/{minScore}/{maxScore}")
+    public Long getNumberOfTimesAdjectiveCorrelate(@PathVariable String adjective, @PathVariable int minRating, @PathVariable int maxRating, @PathVariable double minScore, @PathVariable double maxScore){
+    	//return adjectiveRepository.getNumberOfTimesAdjectiveCorrelate(adjective, minRating, maxRating);
+    	return adjectiveRepository.getNumberOfAdjectivesByNameInReviewRatingAndScoreRange(minRating, maxRating, minScore, maxScore, adjective);
     }
+
+	@GetMapping()
+	@RequestMapping(value="/getNumberOfAdjectivesByNameInReviewRatingAndAverageScoreRangeMatrix")
+	public List<AdjectiveByReviewRatingAndScore> getNumberOfAdjectivesByNameInReviewRatingAndAverageScoreRangeMatrix(){
+		return reviewService.getNumberOfAdjectivesByNameInReviewRatingAndAverageScoreRangeMatrix();
+	}
+	
+	@GetMapping()
+	@RequestMapping(value="/getNumberOfAdjectivesByNameInReviewRatingAndMedianScoreRangeMatrix")
+	public List<AdjectiveByReviewRatingAndScore> getNumberOfAdjectivesByNameInReviewRatingAndMedianScoreRangeMatrix(){
+		return reviewService.getNumberOfAdjectivesByNameInReviewRatingAndMedianScoreRangeMatrix();
+	}
+
 }

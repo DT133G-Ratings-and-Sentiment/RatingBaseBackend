@@ -1,6 +1,7 @@
 package com.dt002g.reviewapplication.backend.services;
 
 import com.dt002g.reviewapplication.backend.models.Adjective;
+import com.dt002g.reviewapplication.backend.models.AdjectiveByReviewRatingAndScore;
 import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
 import com.dt002g.reviewapplication.backend.models.SentenceToAdjective;
@@ -212,6 +213,54 @@ public class ReviewService {
 		}
 		System.out.println("Total: " + total);*/
 		return ReviewRatingByScoreMatrix;
+	}
+	
+	public List<AdjectiveByReviewRatingAndScore> getNumberOfAdjectivesByNameInReviewRatingAndAverageScoreRangeMatrix() {
+		ArrayList<AdjectiveByReviewRatingAndScore> adjectiveMatrix = new ArrayList<>();
+		
+		ArrayList<Pair<Double, Double>> minMaxScores = new ArrayList<>();
+		minMaxScores.add(new Pair<Double, Double>(0.0, 20.0));
+		minMaxScores.add(new Pair<Double, Double>(20.0, 40.0));
+		minMaxScores.add(new Pair<Double, Double>(40.0, 60.0));
+		minMaxScores.add(new Pair<Double, Double>(60.0, 80.0));
+		minMaxScores.add(new Pair<Double, Double>(80.0, 100.0));
+		
+		List<Adjective> adjectives = adjectiveRepository.findAll();
+		
+		for(Adjective adjective: adjectives) {
+			for(int rating = 0; rating < 100; rating+=20) {
+				for(Pair<Double, Double> minMaxScore: minMaxScores) {
+					Long amount = adjectiveRepository.getNumberOfAdjectivesByNameInReviewRatingAndScoreRange(rating, rating+20, minMaxScore.first, minMaxScore.second, adjective.getWord());
+					adjectiveMatrix.add(new AdjectiveByReviewRatingAndScore(adjective.getWord(), amount, rating, rating+20, minMaxScore.first, minMaxScore.second));
+				}
+			}
+		}
+
+		return adjectiveMatrix;
+	}
+	
+	public List<AdjectiveByReviewRatingAndScore> getNumberOfAdjectivesByNameInReviewRatingAndMedianScoreRangeMatrix() {
+		ArrayList<AdjectiveByReviewRatingAndScore> adjectiveMatrix = new ArrayList<>();
+		
+		ArrayList<Pair<Double, Double>> minMaxScores = new ArrayList<>();
+		minMaxScores.add(new Pair<Double, Double>(0.0, 20.0));
+		minMaxScores.add(new Pair<Double, Double>(20.0, 40.0));
+		minMaxScores.add(new Pair<Double, Double>(40.0, 60.0));
+		minMaxScores.add(new Pair<Double, Double>(60.0, 80.0));
+		minMaxScores.add(new Pair<Double, Double>(80.0, 100.0));
+		
+		List<Adjective> adjectives = adjectiveRepository.findAll();
+		
+		for(Adjective adjective: adjectives) {
+			for(int rating = 0; rating < 100; rating+=20) {
+				for(Pair<Double, Double> minMaxScore: minMaxScores) {
+					Long amount = adjectiveRepository.getNumberOfAdjectivesByNameInReviewRatingAndMedianScoreRange(rating, rating+20, minMaxScore.first, minMaxScore.second, adjective.getWord());
+					adjectiveMatrix.add(new AdjectiveByReviewRatingAndScore(adjective.getWord(), amount, rating, rating+20, minMaxScore.first, minMaxScore.second));
+				}
+			}
+		}
+
+		return adjectiveMatrix;
 	}
 
 }
