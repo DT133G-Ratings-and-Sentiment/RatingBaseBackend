@@ -266,16 +266,21 @@ public class ReviewService {
 	public List<ReviewRatingByScore> getNumberOfRewiewsByRatingAndScoreAvgTotalMatrix() {
 		ArrayList<ReviewRatingByScore>  ReviewRatingByScoreMatrix = new ArrayList<>();
 		
-		ArrayList<Pair<Double, Double>> minMaxScores = new ArrayList<>();
-		minMaxScores.add(new Pair<Double, Double>(0.0, 20.0));
-		minMaxScores.add(new Pair<Double, Double>(20.0, 40.0));
-		minMaxScores.add(new Pair<Double, Double>(40.0, 60.0));
-		minMaxScores.add(new Pair<Double, Double>(60.0, 80.0));
-		minMaxScores.add(new Pair<Double, Double>(80.0, 100.0));
-		
 		for(int rating = 0; rating <= 100; rating++) {
 			for(int score = 0; score <= 100; score++) {
 				Long amount = reviewRepository.getNumberOfRewiewsWithRatingXAndAvgScoreY(rating, score);
+				ReviewRatingByScoreMatrix.add(new ReviewRatingByScore(rating, score, score, amount));
+			}
+		}
+		return ReviewRatingByScoreMatrix;
+	}
+	
+	public List<ReviewRatingByScore> getNumberOfRewiewsByRatingAndScoreMedianTotalMatrix() {
+		ArrayList<ReviewRatingByScore>  ReviewRatingByScoreMatrix = new ArrayList<>();
+		
+		for(int rating = 0; rating <= 100; rating++) {
+			for(int score = 0; score <= 100; score++) {
+				Long amount = reviewRepository.getNumberOfRewiewsWithRatingXAndMedianScoreY(rating, score);
 				ReviewRatingByScoreMatrix.add(new ReviewRatingByScore(rating, score, score, amount));
 			}
 		}

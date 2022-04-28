@@ -314,6 +314,12 @@ public class ReviewController {
     public List<ReviewRatingByScore> getNumberOfReviewsByRatingAndAvgScoreTotalMatrix(){
     	return reviewService.getNumberOfRewiewsByRatingAndScoreAvgTotalMatrix();
     }
+    
+    @GetMapping()
+    @RequestMapping(value="/getNumberOfReviewsByRatingAndMedianScoreTotalMatrix")
+    public List<ReviewRatingByScore> getNumberOfReviewsByRatingAndMedianScoreTotalMatrix(){
+    	return reviewService.getNumberOfRewiewsByRatingAndScoreMedianTotalMatrix();
+    }
 
 
 }
