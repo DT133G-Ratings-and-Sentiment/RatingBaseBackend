@@ -4,6 +4,8 @@ import com.dt002g.reviewapplication.backend.models.Adjective;
 import com.dt002g.reviewapplication.backend.models.AdjectiveByReviewRatingAndScore;
 import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
+import com.dt002g.reviewapplication.backend.models.ReviewRatingByScoreAndAdjective;
+import com.dt002g.reviewapplication.backend.models.ReviewsByAdjective;
 import com.dt002g.reviewapplication.backend.models.SentenceToAdjective;
 import com.dt002g.reviewapplication.backend.models.Sentence;
 import com.dt002g.reviewapplication.backend.models.SentenceToAdjectiveId;
@@ -13,6 +15,7 @@ import com.dt002g.reviewapplication.backend.repositories.SentenceToAdjectiveRepo
 import com.dt002g.reviewapplication.backend.util.Pair;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -296,5 +299,34 @@ public class ReviewService {
     	}
     	return result;
     }
+    
+	public List<Review> getAllReviewsWithAdjective(String adjective){
+		return reviewRepository.getAllReviewsWithAdjective(adjective);
+	}
+	
+	public List<ReviewsByAdjective> getAllReviewsWithAdjectiveMatrix(){
+		List<Adjective> adjectives = adjectiveRepository.getAllAdjectives();
+		List<ReviewsByAdjective> reviewsByAdjectives = new ArrayList<ReviewsByAdjective>();
+		for(Adjective adjective: adjectives) {
+			List<Review> reviews = reviewRepository.getAllReviewsWithAdjective(adjective.getWord());
+			reviewsByAdjectives.add(new ReviewsByAdjective(adjective.getWord(), reviews));
+		}
+		return reviewsByAdjectives;
+	}
+	
+	/*public List<ReviewRatingByScoreAndAdjective> getAllReviewRatingByScoreAndAdjectiveMatrix(){
+		List<Adjective> adjectives = adjectiveRepository.getAllAdjectives();
+		List<ReviewRatingByScoreAndAdjective> reviewRatingByScoreAndAdjectives = new ArrayList<ReviewRatingByScoreAndAdjective>();
+		for(Adjective adjective: adjectives) {
+			List<Review> reviews = reviewRepository.getAllReviewsWithAdjective(adjective.getWord());
+			ReviewRatingByScoreAndAdjective reviewRatingByScoreAndAdjective = new ReviewRatingByScoreAndAdjective();
+			reviewRatingByScoreAndAdjective.setAdjective(adjective.getWord());
+			for(Review r: reviews) {
+				reviewRatingByScoreAndAdjective.getReviewRatingByScores().add(new ReviewRatingByScore(r.getRating(), r.getNormalisedAverageSentenceScore(), r.getNormalisedAverageSentenceScore()));
+			}
+			reviewsByAdjectives.add(new ReviewsByAdjective(adjective.getWord(), reviews));
+		}
+		return reviewsByAdjectives;
+	}*/
 
 }

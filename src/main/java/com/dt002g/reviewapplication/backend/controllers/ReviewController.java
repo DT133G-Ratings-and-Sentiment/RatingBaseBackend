@@ -32,6 +32,7 @@ import com.dt002g.reviewapplication.backend.models.AdjectiveByReviewRatingAndSco
 import com.dt002g.reviewapplication.backend.models.RatingInterface;
 import com.dt002g.reviewapplication.backend.models.Review;
 import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
+import com.dt002g.reviewapplication.backend.models.ReviewsByAdjective;
 import com.dt002g.reviewapplication.backend.repositories.AdjectiveRepository;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import com.dt002g.reviewapplication.backend.services.ReviewService;
@@ -323,11 +324,22 @@ public class ReviewController {
     	return reviewService.getNumberOfRewiewsByRatingAndScoreMedianTotalMatrix();
     }
 
-
     @GetMapping()
     @RequestMapping(value = "/getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame")
     public List<Pair<String,Long>> getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame(){
     	return reviewService.getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame();
     	
+    }
+    
+    @GetMapping()
+    @RequestMapping(value = "/getAllReviewsWithAdjective/{adjective}")
+    public List<Review> getAllReviewsWithAdjective(@PathVariable String adjective){
+    	return reviewService.getAllReviewsWithAdjective(adjective);    	
+    }
+    
+    @GetMapping()
+    @RequestMapping(value = "/getAllReviewsWithAdjectiveMatrix")
+    public List<ReviewsByAdjective> getAllReviewsWithAdjectiveMatrix(){
+    	return reviewService.getAllReviewsWithAdjectiveMatrix();    	
     }
 }

@@ -55,5 +55,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	@Query(value = "select count(*) from reviews r2 where r2.rating = :rating and r2.normalised_median_sentence_score = :score", nativeQuery = true)
 	long getNumberOfRewiewsWithRatingXAndMedianScoreY(int rating, double score);
 	
+	@Query(value = "select r.id, r.rating, r.comment, r.normalised_average_sentence_score, r.normalised_median_sentence_score from reviews r inner join sentence s2 on r.id = s2.reviews_id inner join sentence_2_adjective sa on s2.id = sa.sentence_id inner join adjective a on sa.adjective_id = a.id where a.word = :adjective", nativeQuery = true)
+	List<Review> getAllReviewsWithAdjective(@Param("adjective") String adjective);
+	
 }
 
