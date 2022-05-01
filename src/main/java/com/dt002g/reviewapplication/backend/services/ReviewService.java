@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -286,5 +287,14 @@ public class ReviewService {
 		}
 		return ReviewRatingByScoreMatrix;
 	}
+	
+    public List<Pair<String,Long>> getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame(){
+    	List<Object[]> adjectiveAmouts = adjectiveRepository.getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame();
+    	ArrayList<Pair<String, Long>> result = new ArrayList<>();    	
+    	for(Object[] obj: adjectiveAmouts) {
+    		result.add(new Pair<String,Long>((String)obj[0], ((BigDecimal)obj[1]).longValue()));
+    	}
+    	return result;
+    }
 
 }

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
 import com.dt002g.reviewapplication.backend.repositories.AdjectiveRepository;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import com.dt002g.reviewapplication.backend.services.ReviewService;
+import com.dt002g.reviewapplication.backend.util.Pair;
 import com.dt002g.reviewapplication.backend.util.QueryChooser;
 
 @RestController
@@ -322,4 +324,10 @@ public class ReviewController {
     }
 
 
+    @GetMapping()
+    @RequestMapping(value = "/getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame")
+    public List<Pair<String,Long>> getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame(){
+    	return reviewService.getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame();
+    	
+    }
 }
