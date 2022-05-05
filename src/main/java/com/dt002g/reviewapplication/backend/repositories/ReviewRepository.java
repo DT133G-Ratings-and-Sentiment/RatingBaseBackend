@@ -2,6 +2,7 @@ package com.dt002g.reviewapplication.backend.repositories;
 
 import java.util.List;
 
+import com.dt002g.reviewapplication.backend.util.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -57,6 +58,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	
 	@Query(value = "select r.id, r.rating, r.comment, r.normalised_average_sentence_score, r.normalised_median_sentence_score from reviews r inner join sentence s2 on r.id = s2.reviews_id inner join sentence_2_adjective sa on s2.id = sa.sentence_id inner join adjective a on sa.adjective_id = a.id where a.word = :adjective", nativeQuery = true)
 	List<Review> getAllReviewsWithAdjective(@Param("adjective") String adjective);
-	
+
+	@Query(value= "select a.amountOfSentences, count(r.id) from reviews r inner join (select count(s.id) as amountOfSentences, r2.id as id from reviews r2 inner join sentence s on r2.id = s.reviews_id group by r2.id) as a on  r.id = a.id group by a.amountOfSentences", nativeQuery = true)
+	List<Object[]> getNumberOfReviewsWithAMountOfSentencesMatrix();
 }
 

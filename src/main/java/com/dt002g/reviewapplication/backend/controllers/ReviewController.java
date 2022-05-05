@@ -342,4 +342,11 @@ public class ReviewController {
     public List<ReviewsByAdjective> getAllReviewsWithAdjectiveMatrix(){
     	return reviewService.getAllReviewsWithAdjectiveMatrix();    	
     }
+
+	@GetMapping()
+	@RequestMapping(value = "/getNumberOfReviewsWithAMountOfSentencesMatrix")
+	public List<Pair<Long,Long>> getNumberOfReviewsWithAMountOfSentencesMatrix(){
+		return reviewService.getNumberOfReviewsWithAMountOfSentencesMatrix();
+
+	}
 }

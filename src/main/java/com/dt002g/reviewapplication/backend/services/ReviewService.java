@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -329,4 +330,12 @@ public class ReviewService {
 		return reviewsByAdjectives;
 	}*/
 
+	public List<Pair<Long,Long>> getNumberOfReviewsWithAMountOfSentencesMatrix(){
+		List<Object[]> rawData = reviewRepository.getNumberOfReviewsWithAMountOfSentencesMatrix();
+		ArrayList<Pair<Long, Long>> result = new ArrayList<>();
+		for(Object[] obj: rawData) {
+			result.add(new Pair<Long,Long>(((BigInteger)obj[0]).longValue(), ((BigInteger)obj[1]).longValue()));
+		}
+		return result;
+	}
 }
