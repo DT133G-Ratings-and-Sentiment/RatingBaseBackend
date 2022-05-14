@@ -338,4 +338,34 @@ public class ReviewService {
 		}
 		return result;
 	}
+
+	/*public List<Pair<String, Long>> getAdjectivesThatAppearsMostFrequentlyInAsingleReview(){
+		List<Object[]> rawData = adjectiveRepository.getAdjectivesThatAppearsMostFrequentlyInAsingleReview();
+		ArrayList<Pair<String, Long>> result = new ArrayList<>();
+		for(Object[] obj: rawData) {
+			result.add(new Pair<String,Long>((String)obj[0], ((BigInteger)obj[0]).longValue()));
+		}
+		return result;
+	}*/
+
+	public List<Pair<String, Long>> getMostAdjectivesThatAppearsMostFrequentInSingleReview(){
+
+		List<Adjective> adjectives = adjectiveRepository.getAllAdjectives();
+
+		ArrayList<Pair<String, Long>> list = new ArrayList<>();
+		for(Adjective a: adjectives) {
+			list.add(new Pair<String, Long>(a.getWord(), adjectiveRepository.getMaxNumberOfOccurencesInReviewOfAdjective(a.getWord())));
+		}
+		list.sort((p1, p2) -> p2.second.compareTo(p1.second));
+		return list;
+	}
+
+	public List<Pair<String,Long>> getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews(){
+		List<Object[]> rawData = adjectiveRepository.getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews();
+		ArrayList<Pair<String, Long>> result = new ArrayList<>();
+		for(Object[] obj: rawData) {
+			result.add(new Pair<String,Long>( (String)obj[0], ((BigDecimal)obj[1]).longValue()));
+		}
+		return result;
+	}
 }

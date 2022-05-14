@@ -349,4 +349,15 @@ public class ReviewController {
 		return reviewService.getNumberOfReviewsWithAMountOfSentencesMatrix();
 
 	}
+	@GetMapping()
+	@RequestMapping(value = "/getMostAdjectivesThatAppearsMostFrequentInSingleReview")
+	public List<Pair<String, Long>> getMostAdjectivesThatAppearsMostFrequentInSingleReview(){
+		return reviewService.getMostAdjectivesThatAppearsMostFrequentInSingleReview();
+	}
+
+	@GetMapping()
+	@RequestMapping(value="/getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews")
+	public List<Pair<String,Long>> getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews(){
+		return reviewService.getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews();
+	}
 }

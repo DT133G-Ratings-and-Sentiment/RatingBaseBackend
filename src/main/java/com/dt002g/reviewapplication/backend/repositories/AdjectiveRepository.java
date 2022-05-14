@@ -32,5 +32,13 @@ public interface AdjectiveRepository extends JpaRepository<Adjective, Long>{
 	
 	@Query(value = "select a.word, sum(sa.number_of_occurence) from reviews r inner join sentence s2 on r.id = s2.reviews_id inner join sentence_2_adjective sa on s2.id = sa.sentence_id inner join adjective a on sa.adjective_id = a.id where r.rating = r.normalised_average_sentence_score group by a.word", nativeQuery = true) 
 	List<Object[]> getNumberOfTimesAdjectiveOccureWhenRatingAndScoreIsTheSame();
-	
+
+	@Query(value = "select s2a.number_of_occurence, a.word from sentence_2_adjective s2a inner join adjective a on s2a.adjective_id = a.id order by s2a.number_of_occurence desc", nativeQuery = true)
+	List<Object[]> getAdjectivesThatAppearsMostFrequentlyInAsingleReview();
+
+	@Query(value = "select max(s2a.number_of_occurence), a.word as word from sentence_2_adjective s2a inner join adjective a on s2a.adjective_id = a.id where a.word = :adjective", nativeQuery = true)
+	Long getMaxNumberOfOccurencesInReviewOfAdjective(String adjective);
+
+	@Query(value = "select a.word, sum(s2a.number_of_occurence) as amount from adjective a inner join sentence_2_adjective s2a on a.id = s2a.adjective_id group by a.word order by amount desc", nativeQuery = true)
+	List<Object[]> getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews();
 }
