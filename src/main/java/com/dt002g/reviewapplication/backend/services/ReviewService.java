@@ -364,13 +364,11 @@ public class ReviewService {
 	public List<AdjectiveReviewAmountAppearence> getMatrixWithListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews(){
 				List<Pair<String,Long>> adjectiveAmountCount = getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews();
 
-		int numberOfAdjectives = (adjectiveAmountCount.size() > 5)? 5 :  adjectiveAmountCount.size();
-
 		List<AdjectiveReviewAmountAppearence> adjectivesReviews = new ArrayList<>();
 		for(int i = 0; i < 10; i++) {
 			int tempAmount = 0;
 			int occurences = 1;
-			while(adjectiveAmountCount.get(i).second > tempAmount) {
+			while(adjectiveAmountCount.get(i).second > tempAmount && occurences <=10) {
 				ArrayList<ReviewRatingByScore>  reviewRatingByScoreMatrix = new ArrayList<>();
 				for (int rating = 0; rating <= 100; rating+=25) {
 					for (int score = 0; score <= 100; score+=1) {
