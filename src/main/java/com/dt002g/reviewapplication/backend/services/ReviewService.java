@@ -1,14 +1,6 @@
 package com.dt002g.reviewapplication.backend.services;
 
-import com.dt002g.reviewapplication.backend.models.Adjective;
-import com.dt002g.reviewapplication.backend.models.AdjectiveByReviewRatingAndScore;
-import com.dt002g.reviewapplication.backend.models.Review;
-import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
-import com.dt002g.reviewapplication.backend.models.ReviewRatingByScoreAndAdjective;
-import com.dt002g.reviewapplication.backend.models.ReviewsByAdjective;
-import com.dt002g.reviewapplication.backend.models.SentenceToAdjective;
-import com.dt002g.reviewapplication.backend.models.Sentence;
-import com.dt002g.reviewapplication.backend.models.SentenceToAdjectiveId;
+import com.dt002g.reviewapplication.backend.models.*;
 import com.dt002g.reviewapplication.backend.repositories.AdjectiveRepository;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import com.dt002g.reviewapplication.backend.repositories.SentenceToAdjectiveRepository;
@@ -367,5 +359,31 @@ public class ReviewService {
 			result.add(new Pair<String,Long>( (String)obj[0], ((BigDecimal)obj[1]).longValue()));
 		}
 		return result;
+	}
+
+	public List<AdjectiveReviewAmountAppearence> getMatrixWithListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews(){
+				List<Pair<String,Long>> adjectiveAmountCount = getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews();
+
+		int numberOfAdjectives = (adjectiveAmountCount.size() > 5)? 5 :  adjectiveAmountCount.size();
+
+		List<AdjectiveReviewAmountAppearence> adjectivesReviews = new ArrayList<>();
+		for(int i = 0; i < 10; i++) {
+			int tempAmount = 0;
+			int occurences = 1;
+			while(adjectiveAmountCount.get(i).second > tempAmount) {
+				ArrayList<ReviewRatingByScore>  reviewRatingByScoreMatrix = new ArrayList<>();
+				for (int rating = 0; rating <= 100; rating+=25) {
+					for (int score = 0; score <= 100; score+=1) {
+						Long amount = reviewRepository.getNumberOfRewiewsByRatingAndAvgScoreAndAdjectiveWhereAdjectiveAppearance(rating, score, adjectiveAmountCount.get(i).first, occurences);
+						tempAmount += amount * occurences;
+							System.out.println("Adjective: " + adjectiveAmountCount.get(i).first + ", occurences: "+occurences + ", amount: " + amount + ", adjectiveAmountCount.get(i).second:" + adjectiveAmountCount.get(i).second + ", tempAmount: " + tempAmount + ", Rating: " + rating + ", Score: " + score);
+						reviewRatingByScoreMatrix.add(new ReviewRatingByScore(rating, score, score, amount));
+					}
+				}
+				adjectivesReviews.add(new AdjectiveReviewAmountAppearence(adjectiveAmountCount.get(i).first, occurences, reviewRatingByScoreMatrix));
+				occurences++;
+			}
+		}
+		return adjectivesReviews;
 	}
 }

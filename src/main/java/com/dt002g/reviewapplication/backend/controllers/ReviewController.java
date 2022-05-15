@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.dt002g.reviewapplication.backend.models.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,11 +29,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dt002g.reviewapplication.backend.models.AdjectiveByReviewRatingAndScore;
-import com.dt002g.reviewapplication.backend.models.RatingInterface;
-import com.dt002g.reviewapplication.backend.models.Review;
-import com.dt002g.reviewapplication.backend.models.ReviewRatingByScore;
-import com.dt002g.reviewapplication.backend.models.ReviewsByAdjective;
 import com.dt002g.reviewapplication.backend.repositories.AdjectiveRepository;
 import com.dt002g.reviewapplication.backend.repositories.ReviewRepository;
 import com.dt002g.reviewapplication.backend.services.ReviewService;
@@ -359,5 +355,10 @@ public class ReviewController {
 	@RequestMapping(value="/getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews")
 	public List<Pair<String,Long>> getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews(){
 		return reviewService.getListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews();
+	}
+	@GetMapping()
+	@RequestMapping(value="/getMatrixWithListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews")
+	public List<AdjectiveReviewAmountAppearence> getMatrixWithListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews(){
+		return reviewService.getMatrixWithListOfAdjectiveWordAndTotalNumberOfTimesItAppearsInAllReviews();
 	}
 }
